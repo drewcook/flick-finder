@@ -48,7 +48,7 @@ class SignIn extends React.Component {
 				</div>
 				<style jsx>{`
 					h2 {
-						margin: 0 0 30px;
+						margin: 0 0 20px;
 					}
 				`}</style>
 			</AppLayout>
