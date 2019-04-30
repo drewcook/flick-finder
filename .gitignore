@@ -3,6 +3,7 @@
 .vs
 
 # Project ignores
+.next
 dist
 src/api/db.json
 

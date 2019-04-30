@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 const AppLayout = (props) => (
 	<div>
 		<Head>
-			<title>Flick Finder | Welcome</title>
+			<title>Flick Finder | {props.title}</title>
 			<link rel="stylesheet" href="/static/css/bootstrap.min.css" />
 		</Head>
 		<Navbar/>
