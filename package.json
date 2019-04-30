@@ -1,0 +1,35 @@
+{
+	"name": "flick-finder",
+	"version": "1.0.0",
+	"description": "Flick Finder helps you find movies and TV shows to watch in an organized manner",
+	"main": "index.js",
+	"dependencies": {
+		"apollo-server-express": "^2.4.8",
+		"bcrypt": "^3.0.6",
+		"body-parser": "^1.19.0",
+		"express": "^4.16.4",
+		"graphql": "^14.2.1",
+		"graphql-tools": "^4.0.4",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^5.5.4",
+		"next": "^8.1.0",
+		"react": "^16.8.6",
+		"react-dom": "^16.8.6"
+	},
+	"scripts": {
+		"dev": "next",
+		"build": "next build",
+		"start": "next start"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/drewcook/flick-finder.git"
+	},
+	"keywords": [],
+	"author": "Althea Web Services, LLC <altheawebservices@gmail.com> (http://altheawebservices.com/)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/drewcook/flick-finder/issues"
+	},
+	"homepage": "https://github.com/drewcook/flick-finder#readme"
+}
