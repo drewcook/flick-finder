@@ -36,7 +36,7 @@ class SignIn extends React.Component {
 					<h2>Sign In</h2>
 					<form onSubmit={e=>this.handleSubmit(e)}>
 						<div className="form-group">
-							<label htmlFor="#signinEmail">Email address</label>
+							<label htmlFor="#signinEmail">Email Address</label>
 							<input type="email" className="form-control" id="signinEmail" name="email" value={email} onChange={this.handleChange} placeholder="Email Address" />
 						</div>
 						<div className="form-group">

@@ -1,2 +1,2 @@
-web: npm run build
+web: npm run deploy
 dev: npm run dev
