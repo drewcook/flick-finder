@@ -1,4 +1,4 @@
-/*const express = require("express");
+const express = require("express");
 const mongoose = require("mongoose");
 
 // middleware
@@ -21,4 +21,4 @@ app.listen(PORT, (err) => {
 	} else {
 		console.log(`App is listening on port: ${PORT}`);
 	}
-})*/
+})
