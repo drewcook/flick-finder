@@ -6,10 +6,12 @@ Flick finder helps you find movies and TV shows that you may want to watch.  Use
 
 For example, you can search for movies by genre, title, or the year it was released.  You can then add to the "Movies to watch" list or any other list you may have created.  You may also favorite movies individually.
 
-### Run
-This app is built using Next.js, so it can easily be run using the built in server.  The server will open up on a local port 3000.  To run the application locally:
+### Develop
+This app is built using Next.js, so it can easily be run using the built in server.
 
-`npm run dev`
+To run the application locally, run the following command: `npm run dev`.
+
+The application will spin up on a local port.
 
 ### Demo
 There is a beta production app hosted at https://flickfinder.herokuapp.com/.
