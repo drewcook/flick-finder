@@ -20,8 +20,8 @@
 	"scripts": {
 		"dev": "next",
 		"build": "next build",
-		"start": "next start -p $PORT",
-		"deploy": "concurrently --names \"build,start\" \"npm run build\" \"PORT=8000 npm start\""
+		"start": "NODE_ENV=production node server.js",
+		"deploy": "concurrently --names \"build,start\" \"npm run build\" \"npm start\""
 	},
 	"repository": {
 		"type": "git",
