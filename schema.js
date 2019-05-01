@@ -1,10 +1,15 @@
-exports.typeDefs = `
+const { gql } = require("apollo-server-express");
 
+exports.typeDefs = gql`
+	type Query {
+		getCurrentUser: User
+	}
+	
 	type User {
-		name: String! @unique
+		firstName: String!
+		lastName: String!
 		password: String!
 		email: String!
 		joinDate: String
 	}
-
 `;
