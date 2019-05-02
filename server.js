@@ -14,6 +14,7 @@ const jwt = require("jsonwebtoken");
 
 // models
 const User = require("./models/User");
+const Movie = require("./models/Movie");
 
 // apollo/graphQL setup & bind mongoose models
 const { ApolloServer } = require("apollo-server-express");
@@ -23,11 +24,14 @@ const aplServer = new ApolloServer({
 	typeDefs,
 	resolvers,
 	context: {
-		User
+		User,
+		Movie
 	},
 	playground: dev,
 	debug: dev,
 });
+// setup apollo client
+require("./client/client");
 
 // connect to database
 const mongoose = require("mongoose");
@@ -37,7 +41,7 @@ mongoose
 	.catch(err => console.log(err));
 
 // init app
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || dev ? 3000 : 5000;
 app
 	.prepare()
 	.then(() => {
@@ -53,6 +57,7 @@ app
 		if (dev) {
 			console.log(`GraphQL playground is available at ${aplServer.graphqlPath}`);
 		}
+
 		// route handlers
 		server.get("/browse", (req, res) => {
 			const actualPage = "/Browse";

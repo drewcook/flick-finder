@@ -1,11 +1,11 @@
-import AppLayout from "../components/AppLayout";
+import App from "../client/components/Layout";
 
 const SignUp = () => (
-	<AppLayout title="Sign Up">
+	<App title="Sign Up">
 		<div>
 			<h2>Sign Up</h2>
 		</div>
-	</AppLayout>
+	</App>
 );
 
 export default SignUp;

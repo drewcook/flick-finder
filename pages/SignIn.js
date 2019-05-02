@@ -1,4 +1,4 @@
-import AppLayout from "../components/AppLayout";
+import App from "../client/components/App";
 
 class SignIn extends React.Component {
 	constructor(props) {
@@ -31,7 +31,7 @@ class SignIn extends React.Component {
 		const {email, password} = this.state;
 
 		return (
-			<AppLayout title="Sign In">
+			<App title="Sign In">
 				<div className="center">
 					<h2>Sign In</h2>
 					<form onSubmit={e=>this.handleSubmit(e)}>
@@ -51,7 +51,7 @@ class SignIn extends React.Component {
 						margin: 0 0 20px;
 					}
 				`}</style>
-			</AppLayout>
+			</App>
 		);
 	}
 }

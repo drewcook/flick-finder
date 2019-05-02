@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Navbar from "./Navbar";
 
-const AppLayout = (props) => (
+const Layout = (props) => (
 	<div>
 		<Head>
 			<title>Flick Finder | {props.title}</title>
@@ -14,4 +14,4 @@ const AppLayout = (props) => (
 	</div>
 );
 
-export default AppLayout;
+export default Layout;
