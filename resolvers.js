@@ -18,11 +18,15 @@ function movieDbPath(endpoint) {
 
 exports.resolvers = {
 	Query: {
-		getCurrentUser: async (root, args, { currentUser: User }) => {
+		// Users
+		getCurrentUser: async (root, args, { currentUser, User }) => {
 			if (!currentUser) return null;
-			const user = await User.findOne({username: currentUser.username})
+			// find user based on context we've assign at server
+			// redirect to profile page
+			const user = await User.findOne({email: currentUser.email})
 				.populate({
-					path: "profile"
+					path: "profile",
+					//model: "Profile"
 				});
 			return user;
 		},

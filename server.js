@@ -10,6 +10,7 @@ const handle = app.getRequestHandler();
 // middleware
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const compression = require("compression");
 const jwt = require("jsonwebtoken");
 
 // models
@@ -23,10 +24,11 @@ const { resolvers } = require("./resolvers");
 const aplServer = new ApolloServer({
 	typeDefs,
 	resolvers,
-	context: {
+	context: ({ req }) => ({
 		User,
-		Movie
-	},
+		Movie,
+		currentUser: req.currentUser
+	}),
 	playground: dev,
 	debug: dev,
 });
@@ -48,11 +50,26 @@ app
 	.then(() => {
 		// initial setup
 		const server = express();
+		server.use(cors({
+			origin: dev ? "http://localhost:3000" : "https://flickfinder.herokuapp.com",
+			credentials: true
+		}));
+		if (!dev) server.use(compression);
 
 		// apply JWT authentication middleware
 		server.use(async (req, res, next) => {
 			const token = req.headers["authorization"];
-			console.log("server side", token);
+			// only verify token if we are given one from local storage
+			// get current user it is tied to
+			if (token !== "null" && token !== undefined) {
+				try {
+					const currentUser = await jwt.verify(token, process.env.USER_SECRET);
+					// add to request
+					req.currentUser = currentUser;
+				} catch (err) {
+					console.error(err);
+				}
+			}
 			next();
 		})
 
@@ -60,10 +77,10 @@ app
 		aplServer.applyMiddleware({
 			app: server,
 			//path: "/api",
-			cors: cors({
+			cors: {
 				origin: dev ? "http://localhost:3000" : "https://flickfinder.herokuapp.com",
 				credentials: true
-			}),
+			},
 			//bodyParserConfig: true
 		});
 		if (dev) {

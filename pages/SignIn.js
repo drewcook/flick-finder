@@ -22,10 +22,10 @@ class SignIn extends React.Component {
 		e.preventDefault();
 		const {email, password} = this.state;
 		signInUser(email, password).then(({data}) => {
-			console.log(data);
 			// store token and redirect after sign in
 			localStorage.setItem("userToken", data.signInUser.token);
 			this.clearForm();
+			this.props.url.push("/profile");
 		});
 	}
 
