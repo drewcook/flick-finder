@@ -10,6 +10,7 @@ const handle = app.getRequestHandler();
 // middleware
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 
 // models
 const User = require("./models/User");
@@ -32,6 +33,7 @@ const aplServer = new ApolloServer({
 // setup apollo client
 require("./client/client");
 
+
 // connect to database
 const mongoose = require("mongoose");
 mongoose
@@ -46,11 +48,22 @@ app
 	.then(() => {
 		// initial setup
 		const server = express();
+
+		// apply JWT authentication middleware
+		server.use(async (req, res, next) => {
+			const token = req.headers["authorization"];
+			console.log("server side", token);
+			next();
+		})
+
 		// apply apollo server middleware
 		aplServer.applyMiddleware({
 			app: server,
 			//path: "/api",
-			//cors,
+			cors: cors({
+				origin: dev ? "http://localhost:3000" : "https://flickfinder.herokuapp.com",
+				credentials: true
+			}),
 			//bodyParserConfig: true
 		});
 		if (dev) {

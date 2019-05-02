@@ -26,6 +26,8 @@ class SignUp extends React.Component {
 		const {firstName, lastName, email, password} = this.state;
 		signUpUser(firstName, lastName, email, password).then(({data}) => {
 			console.log(data);
+			// store token and redirect after sign up
+			localStorage.setItem("userToken", data.signUpUser.token);
 			this.clearForm();
 		});
 	}
