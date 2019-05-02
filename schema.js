@@ -8,6 +8,7 @@ exports.typeDefs = gql`
 	
 	type Mutation {
 		signUpUser(firstName: String!, lastName: String!, email: String!, password: String!): Token
+		signInUser(email: String!, password: String!): Token
 	}
 	
 	type Movie {

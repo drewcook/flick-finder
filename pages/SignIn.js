@@ -1,4 +1,6 @@
 import App from "../client/components/App";
+import { Mutation } from "react-apollo";
+import { SIGN_IN_USER } from "../mutations";
 
 class SignIn extends React.Component {
 	constructor(props) {
@@ -16,12 +18,21 @@ class SignIn extends React.Component {
 		});
 	}
 
-	handleSubmit = e => {
+	handleSubmit = (e, signInUser) => {
 		e.preventDefault();
 		const {email, password} = this.state;
-		console.log(email, password);
+		signInUser(email, password).then(({data}) => {
+			console.log(data);
+			this.clearForm();
+		});
 	}
 
+	clearForm = () => {
+		this.setState({
+			email: "",
+			password: ""
+		})
+	}
 	validateForm = () => {
 		const {email, password} = this.state;
 		const isInvalid = !email || !password;
@@ -35,23 +46,35 @@ class SignIn extends React.Component {
 			<App title="Sign In">
 				<h2>Sign In</h2>
 				<hr/>
-				<form onSubmit={e=>this.handleSubmit(e)}>
-					<div className="form-group">
-						<label htmlFor="#signinEmail">Email Address</label>
-						<input type="email" className="form-control" id="signinEmail" name="email" value={email} onChange={this.handleChange} placeholder="Email Address" />
-					</div>
-					<div className="form-group">
-						<label htmlFor="#signinPassword">Password</label>
-						<input type="password" className="form-control" id="signinPassword" name="password" value={password} onChange={this.handleChange} placeholder="Password" />
-					</div>
-					<button type="submit" className="btn btn-primary" disabled={this.validateForm()}>Sign In</button>
-				</form>
+				<Mutation mutation={SIGN_IN_USER} variables={{email, password}}>
+					{(signInUser, {data, loading, error}) => {
+						return (
+							<form onSubmit={e=>this.handleSubmit(e, signInUser)}>
+								<div className="form-group">
+									<label htmlFor="#signinEmail">Email Address</label>
+									<input type="email" className="form-control" id="signinEmail" name="email" value={email} onChange={this.handleChange} placeholder="Email Address" />
+								</div>
+								<div className="form-group">
+									<label htmlFor="#signinPassword">Password</label>
+									<input type="password" className="form-control" id="signinPassword" name="password" value={password} onChange={this.handleChange} placeholder="Password" />
+								</div>
+								<button type="submit" className="btn btn-primary" disabled={loading || this.validateForm()}>Sign In</button>
+								{error && <div className="errMsg">{error.message}</div>}
+							</form>
+						);
+					}}
+				</Mutation>
 				<style jsx>{`
 					h2 {
 						margin: 0;
 					}
 					hr {
 						margin-bottom: 40px;
+					}
+					.errMsg {
+						font-size: 14px;
+						color: #F04124;
+						margin: 15px 0;
 					}
 				`}</style>
 			</App>

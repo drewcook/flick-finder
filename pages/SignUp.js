@@ -92,7 +92,7 @@ class SignUp extends React.Component {
 					.errMsg {
 						font-size: 14px;
 						color: #F04124;
-						margin: 15px;
+						margin: 15px 0;
 					}
 				`}</style>
 			</App>

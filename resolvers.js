@@ -1,5 +1,6 @@
 const fetch = require("isomorphic-unfetch");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 // bring in env vars
 require("dotenv").config({path: "variables.env"});
@@ -46,10 +47,11 @@ exports.resolvers = {
 		}
 	},
 	Mutation: {
+		// Users
 		signUpUser: async (root, {firstName, lastName, email, password}, { User }) => {
 			// don't allow duplicate user (based off email)
 			const user = await User.findOne({ email });
-			if (user) throw new Error("User already exists!");
+			if (user) throw new Error("User already exists");
 			// save to db
 			const newUser = await new User({
 				firstName,
@@ -58,9 +60,16 @@ exports.resolvers = {
 				password
 			}).save();
 			// return the jwt (valid only for an hour for this app's purposes)
-			return {
-				token: createToken(newUser, process.env.USER_SECRET, "1hr")
-			};
+			return { token: createToken(newUser, process.env.USER_SECRET, "1hr") };
+		},
+		signInUser: async (root, {email, password}, { User }) => {
+			const user = await User.findOne({ email });
+			if (!user) throw new Error("User not found");
+			// check if valid pw
+			const isValidPassword = await bcrypt.compare(password, user.password);
+			if (!isValidPassword) throw new Error("Invalid password");
+			// return the jwt (valid only for an hour for this app's purposes)
+			return { token: createToken(user, process.env.USER_SECRET, "1hr") };
 		}
 	},
 	User: {}
