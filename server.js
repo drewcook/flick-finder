@@ -10,7 +10,6 @@ const handle = app.getRequestHandler();
 // middleware
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const jwt = require("jsonwebtoken");
 
 // models
 const User = require("./models/User");

@@ -24,7 +24,8 @@ class SignIn extends React.Component {
 
 	validateForm = () => {
 		const {email, password} = this.state;
-		return email === "" || password === "";
+		const isInvalid = !email || !password;
+		return isInvalid;
 	};
 
 	render() {
@@ -32,23 +33,25 @@ class SignIn extends React.Component {
 
 		return (
 			<App title="Sign In">
-				<div className="center">
-					<h2>Sign In</h2>
-					<form onSubmit={e=>this.handleSubmit(e)}>
-						<div className="form-group">
-							<label htmlFor="#signinEmail">Email Address</label>
-							<input type="email" className="form-control" id="signinEmail" name="email" value={email} onChange={this.handleChange} placeholder="Email Address" />
-						</div>
-						<div className="form-group">
-							<label htmlFor="#signinPassword">Password</label>
-							<input type="password" className="form-control" id="signinPassword" name="password" value={password} onChange={this.handleChange} placeholder="Password" />
-						</div>
-						<button type="submit" className="btn btn-primary" disabled={this.validateForm()}>Sign In</button>
-					</form>
-				</div>
+				<h2>Sign In</h2>
+				<hr/>
+				<form onSubmit={e=>this.handleSubmit(e)}>
+					<div className="form-group">
+						<label htmlFor="#signinEmail">Email Address</label>
+						<input type="email" className="form-control" id="signinEmail" name="email" value={email} onChange={this.handleChange} placeholder="Email Address" />
+					</div>
+					<div className="form-group">
+						<label htmlFor="#signinPassword">Password</label>
+						<input type="password" className="form-control" id="signinPassword" name="password" value={password} onChange={this.handleChange} placeholder="Password" />
+					</div>
+					<button type="submit" className="btn btn-primary" disabled={this.validateForm()}>Sign In</button>
+				</form>
 				<style jsx>{`
 					h2 {
-						margin: 0 0 20px;
+						margin: 0;
+					}
+					hr {
+						margin-bottom: 40px;
 					}
 				`}</style>
 			</App>

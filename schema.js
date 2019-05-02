@@ -6,6 +6,10 @@ exports.typeDefs = gql`
 		getTrendingMovies: [Movie]
 	}
 	
+	type Mutation {
+		signUpUser(firstName: String!, lastName: String!, email: String!, password: String!): Token
+	}
+	
 	type Movie {
 		id: Int
 		genres: [MovieGenre]
@@ -22,7 +26,12 @@ exports.typeDefs = gql`
 		name: String
 	}
 	
+	type Token {
+		token: String!
+	}
+	
 	type User {
+		_id: Int
 		firstName: String!
 		lastName: String!
 		password: String!

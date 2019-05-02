@@ -1,8 +1,15 @@
 const fetch = require("isomorphic-unfetch");
+const jwt = require("jsonwebtoken");
 
 // bring in env vars
 require("dotenv").config({path: "variables.env"});
 
+// utilize jwt to work with creating a user
+// returns a jwt token string
+const createToken = (user, secret, expiresIn) => {
+	const { firstName, lastName, email } = user;
+	return jwt.sign({ firstName, lastName, email }, secret, { expiresIn });
+}
 
 function movieDbPath(endpoint) {
 	return `${process.env.MOVIEDB_BASEURL + endpoint}?api_key=${process.env.MOVIEDB_APIKEY}`;
@@ -36,6 +43,24 @@ exports.resolvers = {
 				releaseDate: item.release_date,
 				title: item.title
 			}));
+		}
+	},
+	Mutation: {
+		signUpUser: async (root, {firstName, lastName, email, password}, { User }) => {
+			// don't allow duplicate user (based off email)
+			const user = await User.findOne({ email });
+			if (user) throw new Error("User already exists!");
+			// save to db
+			const newUser = await new User({
+				firstName,
+				lastName,
+				email,
+				password
+			}).save();
+			// return the jwt (valid only for an hour for this app's purposes)
+			return {
+				token: createToken(newUser, process.env.USER_SECRET, "1hr")
+			};
 		}
 	},
 	User: {}
