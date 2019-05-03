@@ -21,6 +21,7 @@ exports.typeDefs = gql`
 		releaseDate: String
 		runtime: Int
 		title: String
+		voteAverage: Float
 	}
 	
 	type MovieGenre {

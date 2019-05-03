@@ -45,6 +45,7 @@ export const GET_MOVIE_BY_ID = gql`
 			popularity
 			releaseDate
 			runtime
+			voteAverage
 		}
 	}
 `;

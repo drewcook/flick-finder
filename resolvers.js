@@ -61,7 +61,8 @@ exports.resolvers = {
 				releaseDate: movieData.release_date,
 				posterPath: process.env.MOVIEDB_IMG_BASE + movieData.poster_path,
 				popularity: movieData.popularity,
-				runtime: movieData.runtime
+				runtime: movieData.runtime,
+				voteAverage: movieData.vote_average
 			}
 		}
 	},

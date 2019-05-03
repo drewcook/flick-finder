@@ -51,7 +51,7 @@ app
 		// initial setup
 		const server = express();
 		server.use(cors({
-			origin: dev ? "http://localhost:3000" : "https://flickfinder.herokuapp.com",
+			origin: dev ? "http://localhost:3000" : `https://flickfinder.herokuapp.com:${PORT}`,
 			credentials: true
 		}));
 		if (!dev) server.use(compression);
@@ -78,7 +78,7 @@ app
 			app: server,
 			//path: "/api",
 			/*cors: {
-				origin: dev ? "http://localhost:3000" : "https://flickfinder.herokuapp.com",
+				origin: dev ? "http://localhost:3000" : `https://flickfinder.herokuapp.com:${PORT}`,
 				credentials: true
 			},*/
 			//bodyParserConfig: true

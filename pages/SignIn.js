@@ -48,27 +48,34 @@ class SignIn extends React.Component {
 
 		return (
 			<Layout session={this.props.session} title="Sign In">
-				<h2>Sign In</h2>
-				<hr/>
-				<Mutation mutation={SIGN_IN_USER} variables={{email, password}}>
-					{(signInUser, {data, loading, error}) => {
-						return (
-							<form onSubmit={e=>this.handleSubmit(e, signInUser)}>
-								<div className="form-group">
-									<label htmlFor="#signinEmail">Email Address</label>
-									<input type="email" className="form-control" id="signinEmail" name="email" value={email} onChange={this.handleChange} placeholder="Email Address" />
-								</div>
-								<div className="form-group">
-									<label htmlFor="#signinPassword">Password</label>
-									<input type="password" className="form-control" id="signinPassword" name="password" value={password} onChange={this.handleChange} placeholder="Password" />
-								</div>
-								<button type="submit" className="btn btn-primary" disabled={loading || this.validateForm()}>Sign In</button>
-								{error && <div className="errMsg">{error.message}</div>}
-							</form>
-						);
-					}}
-				</Mutation>
+				<div className="signin-wrapper">
+					<h2>Sign In</h2>
+					<hr/>
+					<Mutation mutation={SIGN_IN_USER} variables={{email, password}}>
+						{(signInUser, {data, loading, error}) => {
+							return (
+								<form onSubmit={e=>this.handleSubmit(e, signInUser)}>
+									<div className="form-group">
+										<label htmlFor="#signinEmail">Email Address</label>
+										<input type="email" className="form-control" id="signinEmail" name="email" value={email} onChange={this.handleChange} placeholder="Email Address" />
+									</div>
+									<div className="form-group">
+										<label htmlFor="#signinPassword">Password</label>
+										<input type="password" className="form-control" id="signinPassword" name="password" value={password} onChange={this.handleChange} placeholder="Password" />
+									</div>
+									<button type="submit" className="btn btn-primary" disabled={loading || this.validateForm()}>Sign In</button>
+									{error && <div className="errMsg">{error.message}</div>}
+								</form>
+							);
+						}}
+					</Mutation>
+				</div>
 				<style jsx>{`
+					.signin-wrapper {
+						width: 100%;
+						max-width: 600px;
+						margin: auto;
+					}
 					h2 {
 						margin: 0;
 					}

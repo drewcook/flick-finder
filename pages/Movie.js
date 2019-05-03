@@ -1,7 +1,8 @@
 import Layout from "../client/components/Layout";
+import LoadingModule from "../client/components/LoadingModule";
+import MovieRating from "../client/components/MovieRating";
 import { Query } from "react-apollo";
 import { GET_MOVIE_BY_ID } from "../queries";
-import LoadingModule from "../client/components/LoadingModule";
 import Link from "next/link";
 
 const Movie = props => (
@@ -15,21 +16,29 @@ const Movie = props => (
 				if (error) return <div className="errMsg">Error getting movies</div>
 				const details = data.getMovieById;
 				console.log(details);
+				const dateFormatted = new Date(details.releaseDate).toLocaleDateString();
 				return (
 					<div className="row">
 						<div className="col-xs-12 col-md-6">
-							<img src={details.posterPath} alt={details.title} />
+							<img src={details.posterPath} alt={details.title} className="img-fluid" />
 						</div>
 						<div className="col-xs-12 col-md-6">
 							<h3>{details.title}</h3>
 							<p className="lead">{details.overview}</p>
-							<p><strong>Released:</strong> {details.releaseDate}</p>
+							<div><strong>Viewer Rating: {details.voteAverage * 10}%</strong>
+								<MovieRating rating={details.voteAverage} />
+							</div>
+							<p><strong>Released:</strong> {dateFormatted}</p>
 							<p><strong>Genres:</strong>
 								{details.genres.map(genre => (
 									<span key={genre.name} className="genre"><em>{genre.name}</em></span>
 								))}
 							</p>
 							<p><strong>Runtime:</strong> {details.runtime} minutes</p>
+							<div className="btn-group">
+								<button className="btn btn-dark">Add To Watchlist</button>
+								<button className="btn btn-danger">Add To Favorites</button>
+							</div>
 						</div>
 					</div>
 				);
@@ -45,6 +54,11 @@ const Movie = props => (
 			hr {
 				margin-bottom: 40px;
 			}
+			img {
+				width: 100%;
+				max-width: 500px;
+				margin: 0 auto 30px;
+			}
 			.errMsg {
 				font-size: 14px;
 				color: #F04124;
@@ -54,6 +68,11 @@ const Movie = props => (
 				margin: 0 7px;
 				color: #666;
 				font-weight: normal;
+			}
+			.btn-group button.btn {
+				display: block;
+				margin-bottom: 15px;
+				margin-right: 10px;
 			}
 		`}</style>
 	</Layout>
