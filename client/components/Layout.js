@@ -7,7 +7,7 @@ const Layout = props => (
 			<title>Flick Finder | {props.title}</title>
 			<link rel="stylesheet" href="/static/css/bootstrap.min.css" />
 		</Head>
-		<Navbar/>
+		<Navbar session={props.session} />
 		<div className="container">
 			{props.children}
 		</div>
