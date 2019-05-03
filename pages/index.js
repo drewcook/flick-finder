@@ -61,7 +61,7 @@ const Index = props => (
 					width: 100%;
 					float: right;
 					position: absolute;
-					bottom: 30px;
+					bottom: 50px;
 					right: 30px;
 				}
 			`}</style>
