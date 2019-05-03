@@ -49,8 +49,18 @@ const Movie = props => (
 										);
 									}}
 								</Mutation>
-
-								<button className="btn btn-danger">Add To Favorites</button>
+								<Mutation mutation={ADD_TO_FAVORITES} variables={{email: props.session.getCurrentUser.email, movieId: details.id}}>
+									{(addToFavorites, {data, loading, error}) => {
+										console.log(data);
+										return (
+											<React.Fragment>
+												<button className="btn btn-danger" onClick={addToFavorites}>Add To Favorites</button>
+												{data && <div className="successMsg text-success">Successfully added to favorites list.</div>}
+												{error && <div className="errMsg text-danger">{error.message}</div>}
+											</React.Fragment>
+										);
+									}}
+								</Mutation>
 							</div>
 						</div>
 					</div>

@@ -98,6 +98,14 @@ exports.resolvers = {
 			user.watchlist = [...user.watchlist, movieId];
 			user.save();
 			return true;
+		},
+		addToFavorites: async (root, {userEmail, movieId}, { User }) => {
+			const user = await User.findOne({ email: userEmail});
+			if (!user) throw new Error("User not found");
+			if (user.favorites.includes(movieId)) throw new Error("Movie already on favorites list");
+			user.favorites = [...user.favorites, movieId];
+			user.save();
+			return true;
 		}
 	},
 	User: {}

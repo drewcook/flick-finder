@@ -8,6 +8,8 @@ export const GET_CURRENT_USER = gql`
 			lastName
 			email
 			joinDate
+			watchlist
+			favorites
 		}
 	}
 `;

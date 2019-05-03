@@ -45,6 +45,6 @@ exports.typeDefs = gql`
 		email: String!
 		joinDate: String
 		watchlist: [Int]
-		favorites: [Movie]
+		favorites: [Int]
 	}
 `;
