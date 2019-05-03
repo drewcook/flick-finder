@@ -11,6 +11,8 @@ const NavbarWithAuth = () => (
 				<li className="nav-item">
 					<Link href="/Browse" as="/browse"><a className="nav-link" title="Browse">Browse</a></Link>
 				</li>
+			</ul>
+			<ul className="navbar-nav">
 				<li className="nav-item">
 					<Link href="/Profile" as="/profile"><a className="nav-link" title="Profile">Profile</a></Link>
 				</li>
@@ -42,6 +44,8 @@ const NavbarWithOutAuth = () => (
 				<li className="nav-item active">
 					<Link href="/"><a className="nav-link" title="Home">Home</a></Link>
 				</li>
+			</ul>
+			<ul className="navbar-nav">
 				<li className="nav-item">
 					<Link href="/SignIn" as="/signin"><a className="nav-link" title="Sign In">Sign In</a></Link>
 				</li>

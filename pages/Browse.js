@@ -10,7 +10,7 @@ const Browse = props => (
 		<hr/>
 		<Query query={GET_TRENDING_MOVIES}>
 			{({data, loading, error}) => {
-				if (loading) return <div>Loading...</div>
+				if (loading) return <LoadingModule />
 				if (error) return <div>Error getting movies</div>
 				console.log(data);
 				return (
