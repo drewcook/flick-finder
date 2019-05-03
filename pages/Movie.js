@@ -17,7 +17,7 @@ const Movie = props => (
 				if (error) return <div className="errMsg">Error getting movies</div>
 				const details = data.getMovieById;
 				console.log(details);
-				const dateFormatted = new Date(details.releaseDate).toLocaleDateString();
+				const dateFormatted = new Date(details.releaseDate).toLocaleDateString("en-US");
 				return (
 					<div className="row">
 						<div className="col-xs-12 col-md-6">

@@ -14,6 +14,27 @@ export const GET_CURRENT_USER = gql`
 	}
 `;
 
+export const GET_WATCHLIST = gql`
+	query($email: String!) {
+		getWatchlist(userEmail: $email) {
+			id
+			title
+			genres {
+				name
+			}
+			posterPath
+			releaseDate
+			voteAverage
+		}
+	}
+`;
+
+export const GET_FAVORITES = gql`
+	query {
+		null
+	}
+`;
+
 /* Movies */
 export const GET_TRENDING_MOVIES = gql`
 	query {

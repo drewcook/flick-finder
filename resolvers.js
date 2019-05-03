@@ -30,6 +30,25 @@ exports.resolvers = {
 				});
 			return user;
 		},
+		getWatchlist: async (root, { userEmail }, { User }) => {
+			const user = await User.findOne({ email: userEmail });
+			if (!user) throw new Error("User not found");
+			return user.watchlist.map(async (id) => {
+				const movie = await fetch(movieDbPath(`/movie/${id}`));
+				const movieData = await movie.json();
+				return {
+					id: movieData.id,
+					title: movieData.title,
+					overview: movieData.overview,
+					genres: movieData.genres,
+					releaseDate: movieData.release_date,
+					posterPath: process.env.MOVIEDB_IMG_BASE + movieData.poster_path,
+					popularity: movieData.popularity,
+					runtime: movieData.runtime,
+					voteAverage: movieData.vote_average
+				};
+			});
+		},
 		// Movies
 		getTrendingMovies: async (root, args, { Movie }) => {
 			const trending = await fetch(movieDbPath("/trending/movie/week"));
@@ -80,7 +99,7 @@ exports.resolvers = {
 				password
 			}).save();
 			// return the jwt (valid only for an hour for this app's purposes)
-			return { token: createToken(newUser, process.env.USER_SECRET, "1hr") };
+			return { token: createToken(newUser, process.env.USER_SECRET, "4hr") };
 		},
 		signInUser: async (root, {email, password}, { User }) => {
 			const user = await User.findOne({ email });
@@ -89,7 +108,7 @@ exports.resolvers = {
 			const isValidPassword = await bcrypt.compare(password, user.password);
 			if (!isValidPassword) throw new Error("Invalid password");
 			// return the jwt (valid only for an hour for this app's purposes)
-			return { token: createToken(user, process.env.USER_SECRET, "1hr") };
+			return { token: createToken(user, process.env.USER_SECRET, "4hr") };
 		},
 		addToWatchlist: async (root, {userEmail, movieId}, { User }) => {
 			const user = await User.findOne({ email: userEmail});

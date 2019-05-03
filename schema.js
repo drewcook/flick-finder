@@ -5,6 +5,8 @@ exports.typeDefs = gql`
 		getCurrentUser: User
 		getTrendingMovies: [Movie]
 		getMovieById(id: Int!): Movie
+		getWatchlist(userEmail: String!): [Movie]
+		getFavorites(userEmail: String!): [Movie]
 	}
 	
 	type Mutation {
