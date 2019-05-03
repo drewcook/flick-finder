@@ -1,6 +1,7 @@
-import App from "../client/components/App";
+import Layout from "../client/components/Layout";
 import { Mutation } from "react-apollo";
 import { SIGN_IN_USER } from "../mutations";
+import Router from "next/router";
 
 class SignIn extends React.Component {
 	constructor(props) {
@@ -21,11 +22,12 @@ class SignIn extends React.Component {
 	handleSubmit = (e, signInUser) => {
 		e.preventDefault();
 		const {email, password} = this.state;
-		signInUser(email, password).then(({data}) => {
+		signInUser(email, password).then(async ({data}) => {
 			// store token and redirect after sign in
 			localStorage.setItem("userToken", data.signInUser.token);
+			await this.props.refetch();
 			this.clearForm();
-			this.props.url.push("/profile");
+			Router.push("/Profile", "/profile");
 		});
 	}
 
@@ -45,7 +47,7 @@ class SignIn extends React.Component {
 		const {email, password} = this.state;
 
 		return (
-			<App title="Sign In">
+			<Layout title="Sign In">
 				<h2>Sign In</h2>
 				<hr/>
 				<Mutation mutation={SIGN_IN_USER} variables={{email, password}}>
@@ -79,7 +81,7 @@ class SignIn extends React.Component {
 						margin: 15px 0;
 					}
 				`}</style>
-			</App>
+			</Layout>
 		);
 	}
 }

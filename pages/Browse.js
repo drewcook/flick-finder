@@ -1,10 +1,10 @@
-import App from "../client/components/App";
+import Layout from "../client/components/Layout";
 import { GET_TRENDING_MOVIES } from "../queries";
 import { Query } from "react-apollo";
 import MovieCard from "../client/components/MovieCard";
 
 const Browse = () => (
-	<App title="Browse">
+	<Layout title="Browse">
 		<h2>Trending Movies</h2>
 		<hr/>
 		<Query query={GET_TRENDING_MOVIES}>
@@ -27,7 +27,7 @@ const Browse = () => (
 				margin-bottom: 40px;
 			}
 		`}</style>
-	</App>
+	</Layout>
 );
 
 export default Browse;

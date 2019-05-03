@@ -1,12 +1,12 @@
-import App from "../client/components/Layout";
+import Layout from "../client/components/Layout";
 
 const Index = () => (
-	<App title="Welcome">
+	<Layout title="Welcome">
 		<div>
 			<h1>Welcome to Flick Finder!</h1>
 			<p>This is an application that helps you find movies and TV shows to watch.  Sign in to view your flicks or sign up as a new user.</p>
 		</div>
-	</App>
+	</Layout>
 );
 
 export default Index;

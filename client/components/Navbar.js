@@ -13,6 +13,9 @@ const Navbar = () => (
 						<Link href="/Browse" as="/browse"><a className="nav-link" title="Browse">Browse</a></Link>
 					</li>
 					<li className="nav-item">
+						<Link href="/Profile" as="/profile"><a className="nav-link" title="Profile">Profile</a></Link>
+					</li>
+					<li className="nav-item">
 						<Link href="/SignIn" as="/signin"><a className="nav-link" title="Sign In">Sign In</a></Link>
 					</li>
 					<li className="nav-item">

@@ -1,12 +1,12 @@
-import App from "../client/components/App";
+import Layout from "../client/components/Layout";
 
 const Profile = (props) => (
-	<App title="Profile">
+	<Layout title="Profile">
 		<div>
 			<h2>Profile</h2>
 			<p>Here are some details of the user.</p>
 		</div>
-	</App>
+	</Layout>
 );
 
 export default Profile;
