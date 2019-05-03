@@ -90,6 +90,15 @@ exports.resolvers = {
 			if (!isValidPassword) throw new Error("Invalid password");
 			// return the jwt (valid only for an hour for this app's purposes)
 			return { token: createToken(user, process.env.USER_SECRET, "1hr") };
+		},
+		addToWatchlist: async (root, {user, movieId}, { User }) => {
+			const resa = await User.updateOne({ email: user.email }, { watchlist: [...watchlist, movieId] });
+			if (!res) {
+				throw new Error("User not found");
+				return false;
+			} else {
+				return true;
+			}
 		}
 	},
 	User: {}

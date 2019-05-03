@@ -22,6 +22,14 @@ const UserSchema = new Schema({
 	joinDate: {
 		type: Date,
 		default: Date.now()
+	},
+	watchlist: {
+		type: [Schema.Types.ObjectId],
+		ref: 'Movie'
+	},
+	favorites: {
+		type: [Schema.Types.ObjectId],
+		ref: 'Movie'
 	}
 });
 

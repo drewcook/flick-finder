@@ -106,6 +106,12 @@ app
 			app.render(req, res, actualPage, queryParams);
 		});
 
+		server.get("/signout", (req, res) => {
+			const actualPage = "/SignOut";
+			const queryParams = {};
+			app.render(req, res, actualPage, queryParams);
+		});
+
 		server.get("/profile", (req, res) => {
 			const actualPage = "/Profile";
 			const queryParams = {};
