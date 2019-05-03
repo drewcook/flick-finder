@@ -43,15 +43,15 @@ mongoose
 	.then(() => console.log("Mongo DB connected"))
 	.catch(err => console.log(err));
 
-// init app
-const PORT = process.env.PORT || dev ? 3000 : 5000;
+// init app (heroku's assigned and local 3000)
+const PORT = process.env.PORT || 3000;
 app
 	.prepare()
 	.then(() => {
 		// initial setup
 		const server = express();
 		server.use(cors({
-			origin: dev ? "http://localhost:3000" : "http://localhost:5000",
+			origin: dev ? "http://localhost:3000" : "https://flickfinder.herokuapp.com",
 			credentials: true
 		}));
 		if (!dev) server.use(compression);
@@ -78,7 +78,7 @@ app
 			app: server,
 			//path: "/api",
 			/*cors: {
-				origin: dev ? "http://localhost:3000" : "http://localhost:5000",
+				origin: dev ? "http://localhost:3000" : "https://flickfinder.herokuapp.com",
 				credentials: true
 			},*/
 			//bodyParserConfig: true
