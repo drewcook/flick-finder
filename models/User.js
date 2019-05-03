@@ -24,11 +24,11 @@ const UserSchema = new Schema({
 		default: Date.now()
 	},
 	watchlist: {
-		type: [Schema.Types.ObjectId],
+		type: [Number],
 		ref: 'Movie'
 	},
 	favorites: {
-		type: [Schema.Types.ObjectId],
+		type: [Number],
 		ref: 'Movie'
 	}
 });

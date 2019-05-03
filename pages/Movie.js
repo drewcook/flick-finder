@@ -1,8 +1,9 @@
 import Layout from "../client/components/Layout";
 import LoadingModule from "../client/components/LoadingModule";
 import MovieRating from "../client/components/MovieRating";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import { GET_MOVIE_BY_ID } from "../queries";
+import { ADD_TO_WATCHLIST, REMOVE_FROM_WATCHLIST, ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES } from "../mutations";
 import Link from "next/link";
 
 const Movie = props => (
@@ -36,7 +37,19 @@ const Movie = props => (
 							</p>
 							<p><strong>Runtime:</strong> {details.runtime} minutes</p>
 							<div className="btn-group">
-								<button className="btn btn-dark">Add To Watchlist</button>
+								<Mutation mutation={ADD_TO_WATCHLIST} variables={{email: props.session.getCurrentUser.email, movieId: details.id}}>
+									{(addToWatchlist, {data, loading, error}) => {
+										console.log(data);
+										return (
+											<React.Fragment>
+												<button className="btn btn-dark" onClick={addToWatchlist}>Add To Watchlist</button>
+												{data && <div className="successMsg text-success">Successfully added to watchlist.</div>}
+												{error && <div className="errMsg text-danger">{error.message}</div>}
+											</React.Fragment>
+										);
+									}}
+								</Mutation>
+
 								<button className="btn btn-danger">Add To Favorites</button>
 							</div>
 						</div>
@@ -69,10 +82,18 @@ const Movie = props => (
 				color: #666;
 				font-weight: normal;
 			}
+			.btn-group {
+				display: flex;
+				flex-direction: column;
+			}
 			.btn-group button.btn {
 				display: block;
-				margin-bottom: 15px;
-				margin-right: 10px;
+				margin-bottom: 5px;
+				margin-top: 10px;
+			}
+			.successMsg, .errMsg {
+				font-size: 12px;
+				margin: 0 0 5px;
 			}
 		`}</style>
 	</Layout>

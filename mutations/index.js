@@ -24,3 +24,28 @@ export const SIGN_IN_USER = gql`
 		}
 	}
 `;
+
+/* Movies */
+export const ADD_TO_WATCHLIST = gql`
+	mutation($email: String!, $movieId: Int!) {
+		addToWatchlist(userEmail: $email, movieId: $movieId)
+	}
+`;
+
+export const REMOVE_FROM_WATCHLIST = gql`
+	mutation($email: String!, $movieId: Int!) {
+		removeFromWatchlist(userEmail: $email, movieId: $movieId)
+	}
+`;
+
+export const ADD_TO_FAVORITES = gql`
+	mutation($email: String!, $movieId: Int!) {
+		addToFavorites(userEmail: $email, movieId: $movieId)
+	}
+`;
+
+export const REMOVE_FROM_FAVORITES = gql`
+	mutation($email: String!, $movieId: Int!) {
+		removeFromFavorites(userEmail: $email, movieId: $movieId)
+	}
+`;

@@ -10,8 +10,10 @@ exports.typeDefs = gql`
 	type Mutation {
 		signUpUser(firstName: String!, lastName: String!, email: String!, password: String!): Token
 		signInUser(email: String!, password: String!): Token
-		addToWatchlist(userId: Int!, movieId: Int!): Boolean
-		addToFavorites(movieId: Int!): Boolean
+		addToWatchlist(userEmail: String!, movieId: Int!): Boolean
+		addToFavorites(userEmail: String!, movieId: Int!): Boolean
+		removeFromWatchlist(userEmail: String!, movieId: Int!): Boolean
+		removeFromFavorites(userEmail: String!, movieId: Int!): Boolean
 	}
 	
 	type Movie {
@@ -42,7 +44,7 @@ exports.typeDefs = gql`
 		password: String!
 		email: String!
 		joinDate: String
-		watchlist: [Movie]
+		watchlist: [Int]
 		favorites: [Movie]
 	}
 `;
