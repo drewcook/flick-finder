@@ -7,7 +7,7 @@ const MovieCard = ({movie}) => (
 			<div className="card-body">
 				<h4 className="card-title">{movie.title}</h4>
 				<p>Released: {movie.releaseDate}</p>
-				<Link href=""><a className="btn btn-primary">View Details</a></Link>
+				<Link href={`/Movie?id=${movie.id}`} as={`/movie/${movie.id}`}><a className="btn btn-primary">View Details</a></Link>
 			</div>
 			<style jsx>{`
 				.card {
