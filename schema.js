@@ -4,6 +4,7 @@ exports.typeDefs = gql`
 	type Query {
 		getCurrentUser: User
 		getTrendingMovies: [Movie]
+		getMovieById(id: Int!): Movie
 	}
 	
 	type Mutation {
@@ -12,7 +13,7 @@ exports.typeDefs = gql`
 	}
 	
 	type Movie {
-		id: Int
+		id: Int!
 		genres: [MovieGenre]
 		overview: String
 		popularity: Float

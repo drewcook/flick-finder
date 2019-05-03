@@ -30,3 +30,21 @@ export const GET_TRENDING_MOVIES = gql`
 		}
 	}
 `;
+
+export const GET_MOVIE_BY_ID = gql`
+	query($id: Int!) {
+		getMovieById(id: $id) {
+			id
+			title
+			overview
+			genres {
+				id
+				name
+			}
+			posterPath
+			popularity
+			releaseDate
+			runtime
+		}
+	}
+`;

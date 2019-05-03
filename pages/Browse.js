@@ -11,7 +11,7 @@ const Browse = props => (
 		<Query query={GET_TRENDING_MOVIES}>
 			{({data, loading, error}) => {
 				if (loading) return <LoadingModule />
-				if (error) return <div>Error getting movies</div>
+				if (error) return <p>Error getting movies</p>
 				console.log(data);
 				return (
 					<div className="row">
@@ -26,6 +26,11 @@ const Browse = props => (
 			}
 			hr {
 				margin-bottom: 40px;
+			}
+			.errMsg {
+				font-size: 14px;
+				color: #F04124;
+				margin: 15px 0;
 			}
 		`}</style>
 	</Layout>

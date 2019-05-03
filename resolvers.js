@@ -48,6 +48,21 @@ exports.resolvers = {
 				releaseDate: item.release_date,
 				title: item.title
 			}));
+		},
+		getMovieById: async (root, { id }, { Movie }) => {
+			const movie = await fetch(movieDbPath(`/movie/${id}`));
+			if (!movie) throw new Error("Movie not found");
+			const movieData = await movie.json();
+			return {
+				id: movieData.id,
+				title: movieData.title,
+				overview: movieData.overview,
+				genres: movieData.genres,
+				releaseDate: movieData.release_date,
+				posterPath: process.env.MOVIEDB_IMG_BASE + movieData.poster_path,
+				popularity: movieData.popularity,
+				runtime: movieData.runtime
+			}
 		}
 	},
 	Mutation: {
