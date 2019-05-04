@@ -137,6 +137,14 @@ exports.resolvers = {
 			user.save();
 			return true;
 		},
+		removeFromWatchlist: async (root, {userEmail, movieId}, { User }) => {
+			const user = await User.findOne({ email: userEmail});
+			if (!user) throw new Error("User not found");
+			if (!user.watchlist.includes(movieId)) throw new Error("Movie not on watchlist");
+			user.watchlist = user.watchlist.filter(id => id !== movieId);
+			user.save();
+			return true;
+		},
 		addToFavorites: async (root, {userEmail, movieId}, { User }) => {
 			const user = await User.findOne({ email: userEmail});
 			if (!user) throw new Error("User not found");
@@ -144,7 +152,15 @@ exports.resolvers = {
 			user.favorites = [...user.favorites, movieId];
 			user.save();
 			return true;
-		}
+		},
+		removeFromFavorites: async (root, {userEmail, movieId}, { User }) => {
+			const user = await User.findOne({ email: userEmail});
+			if (!user) throw new Error("User not found");
+			if (!user.favorites.includes(movieId)) throw new Error("Movie not on favorites list");
+			user.favorites = user.favorites.filter(id => id !== movieId);
+			user.save();
+			return true;
+		},
 	},
 	User: {}
 };

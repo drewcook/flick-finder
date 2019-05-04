@@ -1,9 +1,10 @@
 import Layout from "../client/components/Layout";
-import { Query } from "react-apollo";
 import LoadingModule from "../client/components/LoadingModule";
-import { GET_WATCHLIST, GET_FAVORITES } from "../queries";
 import MovieRating from "../client/components/MovieRating";
 import Link from "next/link";
+import { Query, Mutation } from "react-apollo";
+import { GET_WATCHLIST, GET_FAVORITES } from "../queries";
+import { REMOVE_FROM_WATCHLIST, REMOVE_FROM_FAVORITES } from "../mutations";
 
 const formatDate = date => {
 	const newDate = new Date(date).toLocaleDateString("en-US");
@@ -65,8 +66,17 @@ const Profile = (props) => {
 											<MovieRating rating={movie.voteAverage} />
 											<div className="btn-group d-block">
 												<Link href={`/movie/${movie.id}`}><button className="btn btn-sm btn-info">Details</button></Link>
-												<button className="btn btn-sm btn-danger">Remove</button>
+												<Mutation mutation={REMOVE_FROM_WATCHLIST} variables={{email: props.session.getCurrentUser.email, movieId: movie.id}}>
+													{(removeFromWatchlist, {data, loading, error}) => (
+														<React.Fragment>
+															<button className="btn btn-sm btn-danger" onClick={removeFromWatchlist}>Remove</button>
+															{data && <div className="successMsg text-success">Successfully removed from watchlist.</div>}
+															{error && <div className="errMsg text-danger">{error.message}</div>}
+														</React.Fragment>
+													)}
+												</Mutation>
 											</div>
+
 										</div>
 									</div>
 								));
@@ -95,7 +105,15 @@ const Profile = (props) => {
 											<MovieRating rating={movie.voteAverage} />
 											<div className="btn-group d-block">
 												<Link href={`/movie/${movie.id}`}><button className="btn btn-sm btn-info">Details</button></Link>
-												<button className="btn btn-sm btn-danger">Remove</button>
+												<Mutation mutation={REMOVE_FROM_FAVORITES} variables={{email: props.session.getCurrentUser.email, movieId: movie.id}}>
+													{(removeFromFavorites, {data, loading, error}) => (
+														<React.Fragment>
+															<button className="btn btn-sm btn-danger" onClick={removeFromFavorites}>Remove</button>
+															{data && <div className="successMsg text-success">Successfully removed from favorites list.</div>}
+															{error && <div className="errMsg text-danger">{error.message}</div>}
+														</React.Fragment>
+													)}
+												</Mutation>
 											</div>
 										</div>
 									</div>
@@ -148,6 +166,10 @@ const Profile = (props) => {
 					.watchlist .btn, .favorites .btn {
 						margin-right: 10px;
 						width: 90px;
+					}
+					.successMsg, .errMsg {
+						font-size: 12px;
+						margin: 5px 0;
 					}
 				`}</style>
 			</div>
