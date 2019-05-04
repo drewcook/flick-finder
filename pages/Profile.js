@@ -75,18 +75,33 @@ const Profile = (props) => {
 					</div>
 					<div className="col-xs-12 col-md-6 favorites">
 						<h3>Favorites</h3>
-						{/*<Query query={GET_FAVORITES}>
+						<Query query={GET_FAVORITES} variables={{email: props.session.getCurrentUser.email}}>
 							{({data, loading, error}) => {
 								if (loading) return <LoadingModule />
-								if (error) return <p className="text-danger">Error getting favorites list.</p>
+								if (error) return <p className="text-danger">Error getting favorites.</p>
 								console.log(data);
-								return (
-									<div className="row">
-										{data.getFavorites.map((movie, idx) => <MovieCard key={movie.id} movie={movie} />)}
+								return data.getFavorites.map((movie, idx) => (
+									<div key={movie.id} className="card bg-light border-dark mb-3">
+										<div className="card-header bg-dark">{movie.title}</div>
+										<div className="card-body">
+											<img src={movie.posterPath} alt={movie.title} className="border-secondary" />
+											<small style={{marginTop: "30px"}}>Released: {new Date(movie.releaseDate).toLocaleDateString("en-US")}</small>
+											<small>Genres:
+												{movie.genres.map(genre => (
+													<span key={genre.name} className="genre"><em>{genre.name}</em></span>
+												))}
+											</small>
+											<small style={{marginBottom: "-14px"}}>Viewer Rating:</small>
+											<MovieRating rating={movie.voteAverage} />
+											<div className="btn-group d-block">
+												<Link href={`/movie/${movie.id}`}><button className="btn btn-sm btn-info">Details</button></Link>
+												<button className="btn btn-sm btn-danger">Remove</button>
+											</div>
+										</div>
 									</div>
-								);
+								));
 							}}
-						</Query>*/}
+						</Query>
 					</div>
 				</div>
 				<style jsx>{`
@@ -106,31 +121,31 @@ const Profile = (props) => {
 						color: #fff;
 						font-size: 20px;
 					}
-					.watchlist img {
+					.watchlist img, .favorites img {
 						float: left;
 						max-height: 200px;
 						margin-right: 15px;
 					}
 					@media (min-width: 768px) and (max-width: 991px) {
-						.watchlist img {
+						.watchlist img, .favorites img {
 							display: block;
 							float: none;
 							max-height: 250px;
 							margin: 0 auto -10px;
 						}
 					}
-					.watchlist small {
+					.watchlist small, .favorites small {
 						margin-top: 10px;
 						display: block;
 					}
-					.watchlist small span {
+					.watchlist small span, .favorites small span {
 						margin: 0 4px;
 					}
-					.watchlist .btn-group {
+					.watchlist .btn-group, .favorites .btn-group {
 						margin-top: 10px;
 						
 					}
-					.watchlist .btn {
+					.watchlist .btn, .favorites .btn {
 						margin-right: 10px;
 						width: 90px;
 					}

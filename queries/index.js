@@ -30,8 +30,17 @@ export const GET_WATCHLIST = gql`
 `;
 
 export const GET_FAVORITES = gql`
-	query {
-		null
+	query($email: String!) {
+	  getFavorites(userEmail: $email) {
+	    id
+	    title
+	    genres {
+	      name
+	    }
+	    posterPath
+	    releaseDate
+	    voteAverage
+	  }
 	}
 `;
 

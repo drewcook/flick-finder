@@ -49,6 +49,25 @@ exports.resolvers = {
 				};
 			});
 		},
+		getFavorites: async (root, { userEmail }, { User }) => {
+			const user = await User.findOne({ email: userEmail });
+			if (!user) throw new Error("User not found");
+			return user.favorites.map(async (id) => {
+				const movie = await fetch(movieDbPath(`/movie/${id}`));
+				const movieData = await movie.json();
+				return {
+					id: movieData.id,
+					title: movieData.title,
+					overview: movieData.overview,
+					genres: movieData.genres,
+					releaseDate: movieData.release_date,
+					posterPath: process.env.MOVIEDB_IMG_BASE + movieData.poster_path,
+					popularity: movieData.popularity,
+					runtime: movieData.runtime,
+					voteAverage: movieData.vote_average
+				};
+			});
+		},
 		// Movies
 		getTrendingMovies: async (root, args, { Movie }) => {
 			const trending = await fetch(movieDbPath("/trending/movie/week"));
