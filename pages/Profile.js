@@ -46,7 +46,7 @@ const Profile = (props) => {
 				<div className="row">
 					<div className="col-xs-12 col-md-6 watchlist">
 						<h3>My Watchlist</h3>
-						<Query query={GET_WATCHLIST} variables={{email: props.session.getCurrentUser.email}}>
+						<Query query={GET_WATCHLIST} variables={{email: user.email}}>
 							{({data, loading, error, refetch}) => {
 								if (loading) return <LoadingModule />
 								if (error) return <p className="text-danger">Error getting watchlist.</p>
@@ -66,7 +66,14 @@ const Profile = (props) => {
 											<MovieRating rating={movie.voteAverage} />
 											<div className="btn-group d-block">
 												<Link href={`/movie/${movie.id}`}><button className="btn btn-sm btn-info">Details</button></Link>
-												<Mutation mutation={REMOVE_FROM_WATCHLIST} variables={{email: props.session.getCurrentUser.email, movieId: movie.id}} refetchQueries={[{query: GET_WATCHLIST, variables: {email: props.session.getCurrentUser.email}}]}>
+												<Mutation
+													mutation={REMOVE_FROM_WATCHLIST}
+													variables={{email: user.email, movieId: movie.id}}
+													refetchQueries={[{
+														query: GET_WATCHLIST,
+														variables: {email: user.email}
+													}]}
+												>
 													{(removeFromWatchlist, {data, loading, error}) => (
 														<React.Fragment>
 															<button className="btn btn-sm btn-danger" onClick={removeFromWatchlist}>Remove</button>
@@ -104,7 +111,14 @@ const Profile = (props) => {
 											<MovieRating rating={movie.voteAverage} />
 											<div className="btn-group d-block">
 												<Link href={`/movie/${movie.id}`}><button className="btn btn-sm btn-info">Details</button></Link>
-												<Mutation mutation={REMOVE_FROM_FAVORITES} variables={{email: props.session.getCurrentUser.email, movieId: movie.id}}>
+												<Mutation
+													mutation={REMOVE_FROM_FAVORITES}
+													variables={{email: props.session.getCurrentUser.email, movieId: movie.id}}
+													refetchQueries={[{
+														query: GET_FAVORITES,
+														variables: {email: props.session.getCurrentUser.email}
+													}]}
+												>
 													{(removeFromFavorites, {data, loading, error}) => (
 														<React.Fragment>
 															<button className="btn btn-sm btn-danger" onClick={removeFromFavorites}>Remove</button>
