@@ -20,7 +20,8 @@
 		"next": "^8.1.0",
 		"react": "^16.8.6",
 		"react-apollo": "^2.5.5",
-		"react-dom": "^16.8.6"
+		"react-dom": "^16.8.6",
+		"react-notifications": "^1.4.3"
 	},
 	"scripts": {
 		"dev": "NODE_ENV=development node server.js",

@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { NotificationContainer } from 'react-notifications';
 
 const Layout = props => (
 	<div>
@@ -9,6 +10,7 @@ const Layout = props => (
 			<meta charSet="utf-8" />
 			<title>Flick Finder | {props.title}</title>
 			<link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+			<link rel="stylesheet" href="/static/css/notifications.min.css" />
 		</Head>
 		<header>
 			<Navbar session={props.session} />
@@ -17,6 +19,7 @@ const Layout = props => (
 			{props.children}
 		</div>
 		<Footer />
+		<NotificationContainer />
 		<style jsx global>{`
 			/* global styles go here */
 			body {

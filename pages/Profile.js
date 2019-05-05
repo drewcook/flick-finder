@@ -5,12 +5,21 @@ import Link from "next/link";
 import { Query, Mutation } from "react-apollo";
 import { GET_WATCHLIST, GET_FAVORITES } from "../queries";
 import { REMOVE_FROM_WATCHLIST, REMOVE_FROM_FAVORITES } from "../mutations";
+import { NotificationManager } from 'react-notifications';
 
 const formatDate = date => {
 	const newDate = new Date(date).toLocaleDateString("en-US");
 	const newTime = new Date(date).toLocaleTimeString("en-US");
 	return `${newDate} at ${newTime}`;
 }
+
+const removeWatchlist = callback => callback()
+	.then(() => NotificationManager.success("You've removed an item from your watchlist.", "Success!"))
+	.catch(() => NotificationManager.error("Something went wrong.", "Uh oh!"));
+
+const removeFavorite = callback => callback()
+	.then(() => NotificationManager.success("You've removed an item from your favorites.", "Success!"))
+	.catch(() => NotificationManager.error("Something went wrong.", "Uh oh!"));
 
 const Profile = (props) => {
 	const user = props.session.getCurrentUser;
@@ -23,7 +32,7 @@ const Profile = (props) => {
 				<div className="row">
 					<div className="col-xs-12 col-md-6">
 						<div className="card border-secondary mb-3">
-							<div className="card-header">My Details</div>
+							<div className="card-header"><h3>My Details</h3></div>
 							<div className="card-body">
 								<h4 className="card-title"></h4>
 								<div className="card-text">
@@ -47,13 +56,13 @@ const Profile = (props) => {
 					<div className="col-xs-12 col-md-6 watchlist">
 						<h3>My Watchlist</h3>
 						<Query query={GET_WATCHLIST} variables={{email: user.email}}>
-							{({data, loading, error, refetch}) => {
+							{({data, loading, error}) => {
 								if (loading) return <LoadingModule />
 								if (error) return <p className="text-danger">Error getting watchlist.</p>
 								console.log(data);
-								return data.getWatchlist.map((movie, idx) => (
+								return data.getWatchlist.length ? data.getWatchlist.map((movie, idx) => (
 									<div key={movie.id} className="card bg-light border-dark mb-3">
-										<div className="card-header bg-dark">{movie.title}</div>
+										<div className="card-header bg-dark"><h4>{movie.title}</h4></div>
 										<div className="card-body">
 											<img src={movie.posterPath} alt={movie.title} className="border-secondary" />
 											<small style={{marginTop: "30px"}}>Released: {new Date(movie.releaseDate).toLocaleDateString("en-US")}</small>
@@ -74,31 +83,25 @@ const Profile = (props) => {
 														variables: {email: user.email}
 													}]}
 												>
-													{(removeFromWatchlist, {data, loading, error}) => (
-														<React.Fragment>
-															<button className="btn btn-sm btn-danger" onClick={removeFromWatchlist}>Remove</button>
-															{data && <div className="successMsg text-success">Successfully removed from watchlist.</div>}
-															{error && <div className="errMsg text-danger">{error.message}</div>}
-														</React.Fragment>
-													)}
+													{(removeFromWatchlist) => <button className="btn btn-sm btn-danger" onClick={() => removeWatchlist(removeFromWatchlist)}>Remove</button>}
 												</Mutation>
 											</div>
 										</div>
 									</div>
-								));
+								)) : <p>There are currently no items in your watchlist.</p>;
 							}}
 						</Query>
 					</div>
 					<div className="col-xs-12 col-md-6 favorites">
 						<h3>Favorites</h3>
-						<Query query={GET_FAVORITES} variables={{email: props.session.getCurrentUser.email}}>
+						<Query query={GET_FAVORITES} variables={{email: user.email}}>
 							{({data, loading, error}) => {
 								if (loading) return <LoadingModule />
 								if (error) return <p className="text-danger">Error getting favorites.</p>
 								console.log(data);
-								return data.getFavorites.map((movie, idx) => (
+								return data.getFavorites.length ? data.getFavorites.map((movie, idx) => (
 									<div key={movie.id} className="card bg-light border-dark mb-3">
-										<div className="card-header bg-dark">{movie.title}</div>
+										<div className="card-header bg-dark"><h4>{movie.title}</h4></div>
 										<div className="card-body">
 											<img src={movie.posterPath} alt={movie.title} className="border-secondary" />
 											<small style={{marginTop: "30px"}}>Released: {new Date(movie.releaseDate).toLocaleDateString("en-US")}</small>
@@ -113,24 +116,18 @@ const Profile = (props) => {
 												<Link href={`/movie/${movie.id}`}><button className="btn btn-sm btn-info">Details</button></Link>
 												<Mutation
 													mutation={REMOVE_FROM_FAVORITES}
-													variables={{email: props.session.getCurrentUser.email, movieId: movie.id}}
+													variables={{email: user.email, movieId: movie.id}}
 													refetchQueries={[{
 														query: GET_FAVORITES,
-														variables: {email: props.session.getCurrentUser.email}
+														variables: {email: user.email}
 													}]}
 												>
-													{(removeFromFavorites, {data, loading, error}) => (
-														<React.Fragment>
-															<button className="btn btn-sm btn-danger" onClick={removeFromFavorites}>Remove</button>
-															{data && <div className="successMsg text-success">Successfully removed from favorites list.</div>}
-															{error && <div className="errMsg text-danger">{error.message}</div>}
-														</React.Fragment>
-													)}
+													{(removeFromFavorites) => <button className="btn btn-sm btn-danger" onClick={() => removeFavorite(removeFromFavorites)}>Remove</button>}
 												</Mutation>
 											</div>
 										</div>
 									</div>
-								));
+								)) : <p>There are currently no favorited items to show.</p>;
 							}}
 						</Query>
 					</div>
@@ -148,9 +145,15 @@ const Profile = (props) => {
 					.row {
 						margin-bottom: 30px;
 					}
-					.card-header {
+					.card-header h3 {
+						color: #000;
+						font-size: 22px;
+						margin: 0;
+					}
+					.card-header h4 {
 						color: #fff;
-						font-size: 20px;
+						font-size: 18px;
+						margin: 0;
 					}
 					.watchlist img, .favorites img {
 						float: left;
@@ -179,10 +182,6 @@ const Profile = (props) => {
 					.watchlist .btn, .favorites .btn {
 						margin-right: 10px;
 						width: 90px;
-					}
-					.successMsg, .errMsg {
-						font-size: 12px;
-						margin: 5px 0;
 					}
 				`}</style>
 			</div>
