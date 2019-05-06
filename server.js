@@ -30,7 +30,7 @@ const aplServer = new ApolloServer({
 		Movie,
 		currentUser: req.currentUser
 	}),
-	playground: true,
+	playground: dev,
 	debug: dev,
 });
 // setup apollo client
@@ -52,7 +52,7 @@ app
 		// initial setup
 		const server = express();
 		server.use(cors({
-			origin: `http://localhost:${PORT}`,
+			origin: dev? "http://localhost:3000" : "https://flickfinder.herokuapp.com",
 			credentials: true
 		}));
 		server.use(favicon(path.join(__dirname, "/static/img/favicon.ico")));
@@ -77,15 +77,8 @@ app
 		})
 
 		// apply apollo server middleware
-		aplServer.applyMiddleware({
-			app: server,
-			//path: "/api",
-			/*cors: {
-				origin: dev ? "http://localhost:3000" : `https://flickfinder.herokuapp.com:${PORT}`,
-				credentials: true
-			},*/
-			//bodyParserConfig: true
-		});
+		aplServer.applyMiddleware({ app: server });
+
 		if (dev) {
 			console.log(`GraphQL playground is available at ${aplServer.graphqlPath}`);
 		}
@@ -136,6 +129,12 @@ app
 		server.get("*", (req, res) => {
 			return handle(req, res);
 		});
+
+		if (!dev) {
+			server.get("*", (req, res) => {
+				return handle(req, res);
+			});
+		}
 
 		// listen
 		server.listen(PORT, (err) => {

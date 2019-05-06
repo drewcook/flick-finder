@@ -3,7 +3,6 @@ const ApolloClient = ApolloBoost.default;
 const fetch = require("isomorphic-unfetch");
 
 const dev = process.env.NODE_ENV !== "production";
-const PORT = process.env.PORT || 3000;
 
 const client = new ApolloClient({
 	uri: dev ? "http://localhost:3000/graphql" : "https://flickfinder.herokuapp.com/graphql",
@@ -13,7 +12,6 @@ const client = new ApolloClient({
 	request: operation => {
 		// pass along token with every http request to server for authentication
 		const token = localStorage.getItem("userToken");
-		console.log('client headers', headers);
 		operation.setContext({
 			headers: {
 				authorization: token ? token : null
