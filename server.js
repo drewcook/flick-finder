@@ -30,7 +30,7 @@ const aplServer = new ApolloServer({
 		Movie,
 		currentUser: req.currentUser
 	}),
-	playground: dev,
+	playground: true,
 	debug: dev,
 });
 // setup apollo client
