@@ -20,6 +20,7 @@ class Movie extends React.Component {
 	toggleWatchlist = (callback, didAdd) => callback()
 		.then(() => {
 			this.setState({ isWatchlisted: !this.state.isWatchlisted });
+			this.props.refetch();
 			NotificationManager.success(`You've ${didAdd ? "added and item to" : "removed an item from"} your watchlist.`, "Success!");
 		})
 		.catch(() => NotificationManager.error("Something went wrong.", "Uh oh!"));
@@ -27,6 +28,7 @@ class Movie extends React.Component {
 	toggleFavorite = (callback, didAdd) => callback()
 		.then(() => {
 			this.setState({ isFavorited: !this.state.isFavorited });
+			this.props.refetch();
 			NotificationManager.success(`You've ${didAdd ? "added and item to" : "removed an item from"} your favorites.`, "Success!");
 		})
 		.catch(() => NotificationManager.error("Something went wrong.", "Uh oh!"));
@@ -34,6 +36,7 @@ class Movie extends React.Component {
 	render() {
 		const { isWatchlisted, isFavorited } = this.state;
 		const user = this.props.session.getCurrentUser;
+		const movieId = parseInt(this.props.pageProps.movie.id);
 		return (
 			<Layout session={this.props.session} title="Movie Details">
 				<Link href="/Browse" as="browse">
@@ -41,7 +44,7 @@ class Movie extends React.Component {
 				</Link>
 				<h2>Movie Details</h2>
 				<hr/>
-				<Query query={GET_MOVIE_BY_ID} variables={{id: parseInt(this.props.pageProps.movie.id)}}>
+				<Query query={GET_MOVIE_BY_ID} variables={{id: movieId}}>
 					{({data, loading, error}) => {
 						if (loading) return <LoadingModule/>
 						if (error) return <div className="errMsg">Error getting movies</div>
@@ -70,7 +73,8 @@ class Movie extends React.Component {
 											<Mutation
 												mutation={ADD_TO_WATCHLIST}
 												variables={{email: user.email, movieId: details.id}}>
-												{(addToWatchlist) => <button className="btn btn-dark" onClick={() => this.toggleWatchlist(addToWatchlist, true)}>Add To Watchlist <i className="far fa-eye"></i></button>}
+												{(addToWatchlist) => <button className="btn btn-dark" onClick={() => this.toggleWatchlist(addToWatchlist, true)}>
+													Add To Watchlist <i className="far fa-eye"></i></button>}
 											</Mutation> :
 											<Mutation
 												mutation={REMOVE_FROM_WATCHLIST}

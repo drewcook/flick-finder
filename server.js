@@ -30,7 +30,11 @@ const aplServer = new ApolloServer({
 		Movie,
 		currentUser: req.currentUser
 	}),
-	playground: true,
+	engine: {
+		apiKey: process.env.ENGINE_API_KEY
+	},
+	introspection: true,
+	playground: dev,
 	debug: dev,
 });
 // setup apollo client
@@ -52,7 +56,7 @@ app
 		// initial setup
 		const server = express();
 		server.use(cors({
-			origin: dev? "http://localhost:3000" : "https://flickfinder.herokuapp.com",
+			origin: dev ? "http://localhost:3000" : "https://flickfinder.herokuapp.com",
 			credentials: true
 		}));
 		server.use(favicon(path.join(__dirname, "/static/img/favicon.ico")));

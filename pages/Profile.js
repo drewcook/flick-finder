@@ -3,7 +3,7 @@ import LoadingModule from "../client/components/LoadingModule";
 import MovieRating from "../client/components/MovieRating";
 import Link from "next/link";
 import { Query, Mutation } from "react-apollo";
-import { GET_WATCHLIST, GET_FAVORITES } from "../queries";
+import { GET_CURRENT_USER, GET_WATCHLIST, GET_FAVORITES } from "../queries";
 import { REMOVE_FROM_WATCHLIST, REMOVE_FROM_FAVORITES } from "../mutations";
 import { NotificationManager } from 'react-notifications';
 
@@ -83,7 +83,7 @@ const Profile = (props) => {
 														variables: {email: user.email}
 													}]}
 												>
-													{(removeFromWatchlist) => <button className="btn btn-sm btn-danger" onClick={() => removeWatchlist(removeFromWatchlist)}>Remove</button>}
+													{(removeFromWatchlist) => <button className="btn btn-sm btn-danger" onClick={() => removeWatchlist(removeFromWatchlist)}>Remove <i className="fas fa-times"></i></button>}
 												</Mutation>
 											</div>
 										</div>
