@@ -7,7 +7,6 @@
 dist
 src/api/db.json
 out/
-variables.env
 
 # Logs
 logs
