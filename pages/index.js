@@ -31,7 +31,6 @@ const Index = props => (
 						<ul>
 							<li>Search directly for movie titles.</li>
 							<li>Browse current trending titles.</li>
-							<li>Filter by release date, genre, and popularity.</li>
 							<li>Save your favorite movies</li>
 							<li>Manage your own watchlist.</li>
 						</ul>

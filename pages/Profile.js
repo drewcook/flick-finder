@@ -32,7 +32,7 @@ const Profile = (props) => {
 				<div className="row">
 					<div className="col-xs-12 col-md-6">
 						<div className="card border-secondary mb-3">
-							<div className="card-header"><h3>My Details</h3></div>
+							<div className="card-header"><h3><i className="fas fa-user"></i> My Details</h3></div>
 							<div className="card-body">
 								<h4 className="card-title"></h4>
 								<div className="card-text">
@@ -113,7 +113,7 @@ const Profile = (props) => {
 											<small style={{marginBottom: "-14px"}}>Viewer Rating:</small>
 											<MovieRating rating={movie.voteAverage} />
 											<div className="btn-group d-block">
-												<Link href={`/movie/${movie.id}`}><button className="btn btn-sm btn-info">Details</button></Link>
+												<Link href={`/movie/${movie.id}`}><button className="btn btn-sm btn-info">Details <i className="fas fa-info-circle"></i></button></Link>
 												<Mutation
 													mutation={REMOVE_FROM_FAVORITES}
 													variables={{email: user.email, movieId: movie.id}}
@@ -122,7 +122,7 @@ const Profile = (props) => {
 														variables: {email: user.email}
 													}]}
 												>
-													{(removeFromFavorites) => <button className="btn btn-sm btn-danger" onClick={() => removeFavorite(removeFromFavorites)}>Remove</button>}
+													{(removeFromFavorites) => <button className="btn btn-sm btn-danger" onClick={() => removeFavorite(removeFromFavorites)}>Remove <i className="fas fa-times"></i></button>}
 												</Mutation>
 											</div>
 										</div>

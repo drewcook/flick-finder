@@ -50,7 +50,7 @@ class Search extends React.Component {
 									<p>Search through over 400,000 movie titles.</p>
 									<input type="search" className="form-control" id="searchTerm" name="searchTerm" value={searchTerm} onChange={this.handleChange} placeholder="Title, keywords, release data, etc." />
 								</div>
-								<button type="submit" className="btn btn-primary" disabled={searchTerm === ""}>Go!</button>
+								<button type="submit" className="btn btn-primary" disabled={searchTerm === ""}>Search <i className="fas fa-search"></i></button>
 							</form>
 							{results && results.length &&
 								<div className="pagination">
@@ -62,7 +62,7 @@ class Search extends React.Component {
 										}}
 										className="btn btn-success"
 										disabled={page === 1}>
-										Prev Page
+										<i className="fas fa-angle-left"> </i>Prev Page
 									</button>
 									<span>Page {page} of {totalPages}</span>
 									<button
@@ -73,7 +73,7 @@ class Search extends React.Component {
 										}}
 										className="btn btn-success"
 										disabled={page >= totalPages}>
-										Next Page
+										Next Page <i className="fas fa-angle-right"></i>
 									</button>
 								</div>
 							}
@@ -112,6 +112,9 @@ class Search extends React.Component {
 						justify-content: space-between;
 						max-width: 300px;
 						margin: 20px auto;
+					}
+					form .btn {
+						width: 100px;
 					}
 				`}</style>
 			</Layout>

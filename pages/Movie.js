@@ -37,7 +37,7 @@ class Movie extends React.Component {
 		return (
 			<Layout session={this.props.session} title="Movie Details">
 				<Link href="/Browse" as="browse">
-					<button className="btn btn-success">&lt; Back to list</button>
+					<button className="btn btn-success"><i className="fas fa-angle-left"></i> Back to list</button>
 				</Link>
 				<h2>Movie Details</h2>
 				<hr/>
@@ -64,30 +64,30 @@ class Movie extends React.Component {
 											<span key={genre.name} className="genre"><em>{genre.name}</em></span>
 										))}
 									</p>
-									<p><strong>Runtime:</strong> {details.runtime} minutes</p>
+									<p><strong>Runtime:</strong> {details.runtime ? `${details.runtime} minutes` : "N/A"}</p>
 									<div className="btn-group">
 										{!isWatchlisted ?
 											<Mutation
 												mutation={ADD_TO_WATCHLIST}
 												variables={{email: user.email, movieId: details.id}}>
-												{(addToWatchlist) => <button className="btn btn-dark" onClick={() => this.toggleWatchlist(addToWatchlist, true)}>Add To Watchlist</button>}
+												{(addToWatchlist) => <button className="btn btn-dark" onClick={() => this.toggleWatchlist(addToWatchlist, true)}>Add To Watchlist <i className="far fa-eye"></i></button>}
 											</Mutation> :
 											<Mutation
 												mutation={REMOVE_FROM_WATCHLIST}
 												variables={{email: user.email, movieId: details.id}}>
-												{(removeFromWatchlist) => <button className="btn btn-dark" onClick={() => this.toggleWatchlist(removeFromWatchlist, false)}>Remove From Watchlist</button>}
+												{(removeFromWatchlist) => <button className="btn btn-dark" onClick={() => this.toggleWatchlist(removeFromWatchlist, false)}>Remove From Watchlist <i className="far fa-eye-slash"></i></button>}
 											</Mutation>
 										}
 										{!isFavorited ?
 											<Mutation
 												mutation={ADD_TO_FAVORITES}
 												variables={{email: user.email, movieId: details.id}}>
-												{(addToFavorites) => <button className="btn btn-danger" onClick={() => this.toggleFavorite(addToFavorites, true)}>Add To Favorites</button>}
+												{(addToFavorites) => <button className="btn btn-danger" onClick={() => this.toggleFavorite(addToFavorites, true)}>Add To Favorites <i className="far fa-heart"></i></button>}
 											</Mutation> :
 											<Mutation
 												mutation={REMOVE_FROM_FAVORITES}
 												variables={{email: user.email, movieId: details.id}}>
-												{(removeFromFavorites) => <button className="btn btn-danger" onClick={() => this.toggleFavorite(removeFromFavorites, false)}>Remove From Favorites</button>}
+												{(removeFromFavorites) => <button className="btn btn-danger" onClick={() => this.toggleFavorite(removeFromFavorites, false)}>Remove From Favorites <i className="fas fa-heart"></i></button>}
 											</Mutation>
 										}
 

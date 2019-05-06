@@ -7,7 +7,7 @@ const MovieCard = ({movie}) => (
 			<div className="card-body">
 				<h4 className="card-title">{movie.title}</h4>
 				<p>Released: {new Date(movie.releaseDate).toLocaleDateString("en-US")}</p>
-				<Link href={`/Movie?id=${movie.id}`} as={`/movie/${movie.id}`}><a className="btn btn-primary">View Details</a></Link>
+				<Link href={`/Movie?id=${movie.id}`} as={`/movie/${movie.id}`}><a className="btn btn-primary">View Details <i className="fas fa-info-circle"></i></a></Link>
 			</div>
 			<style jsx>{`
 				.card {
