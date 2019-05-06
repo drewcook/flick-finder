@@ -27,8 +27,7 @@
 	"scripts": {
 		"dev": "NODE_ENV=development node server.js",
 		"build": "next build",
-		"start": "NODE_ENV=production node server.js -p $PORT",
-		"heroku-postbuild": "next build",
+		"start": "next start -p $PORT",
 		"export": "next export"
 	},
 	"repository": {
