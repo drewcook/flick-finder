@@ -81,3 +81,21 @@ export const GET_MOVIE_BY_ID = gql`
 		}
 	}
 `;
+
+export const SEARCH_BY_TITLE = gql`
+	query($searchTerm: String!, $page: Int!) {
+		searchByTitle(searchTerm: $searchTerm, page: $page) {
+			page
+			totalPages
+			total
+			results {
+				id
+				popularity
+				posterPath
+				releaseDate
+				title
+			}
+		}
+	}
+`;
+

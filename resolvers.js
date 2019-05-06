@@ -16,6 +16,10 @@ function movieDbPath(endpoint) {
 	return `${process.env.MOVIEDB_BASEURL + endpoint}?api_key=${process.env.MOVIEDB_APIKEY}`;
 }
 
+function movieDbSearch(endpoint, queryString) {
+	return `${process.env.MOVIEDB_BASEURL + endpoint}?api_key=${process.env.MOVIEDB_APIKEY}&${queryString}`;
+}
+
 exports.resolvers = {
 	Query: {
 		// Users
@@ -102,6 +106,24 @@ exports.resolvers = {
 				runtime: movieData.runtime,
 				voteAverage: movieData.vote_average
 			}
+		},
+		searchByTitle: async (root, { searchTerm, page }, { Movie }) => {
+			if (!searchTerm) return {page: 1, totalPages: 1, total: 0, results: []};
+			const res = await fetch(movieDbSearch("/search/movie", `language=en-US&query=${searchTerm}&page=${page}&include_adult=false`));
+			const resultsData = await res.json();
+			const results = resultsData.results.map(movie => ({
+				id: movie.id,
+				popularity: movie.popularity,
+				posterPath: process.env.MOVIEDB_IMG_BASE + movie.poster_path,
+				releaseDate: movie.release_date,
+				title: movie.title
+			}));
+			return {
+				page: resultsData.page,
+				totalPages: resultsData.total_pages,
+				total: resultsData.total_results,
+				results
+			};
 		}
 	},
 	Mutation: {

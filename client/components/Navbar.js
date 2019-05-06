@@ -9,7 +9,10 @@ const NavbarWithAuth = () => (
 					<Link href="/"><a className="nav-link" title="Home">Home</a></Link>
 				</li>
 				<li className="nav-item">
-					<Link href="/Browse" as="/browse"><a className="nav-link" title="Browse">Browse</a></Link>
+					<Link href="/Browse" as="/browse"><a className="nav-link" title="Browse">Trending</a></Link>
+				</li>
+				<li className="nav-item">
+					<Link href="/Search" as="search"><a className="nav-link" title="Search">Search</a></Link>
 				</li>
 			</ul>
 			<ul className="navbar-nav">

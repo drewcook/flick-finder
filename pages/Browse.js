@@ -12,7 +12,6 @@ const Browse = props => (
 			{({data, loading, error}) => {
 				if (loading) return <LoadingModule />
 				if (error) return <p>Error getting movies</p>
-				console.log(data);
 				return (
 					<div className="row">
 						{data.getTrendingMovies.map((movie, idx) => <MovieCard key={movie.id} movie={movie} />)}

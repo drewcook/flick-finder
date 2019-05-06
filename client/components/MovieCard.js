@@ -6,7 +6,7 @@ const MovieCard = ({movie}) => (
 			<img className="card-img-top" src={movie.posterPath} alt={movie.title} className="img-fluid" />
 			<div className="card-body">
 				<h4 className="card-title">{movie.title}</h4>
-				<p>Released: {movie.releaseDate}</p>
+				<p>Released: {new Date(movie.releaseDate).toLocaleDateString("en-US")}</p>
 				<Link href={`/Movie?id=${movie.id}`} as={`/movie/${movie.id}`}><a className="btn btn-primary">View Details</a></Link>
 			</div>
 			<style jsx>{`

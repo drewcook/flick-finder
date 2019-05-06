@@ -7,6 +7,14 @@ exports.typeDefs = gql`
 		getMovieById(id: Int!): Movie
 		getWatchlist(userEmail: String!): [Movie]
 		getFavorites(userEmail: String!): [Movie]
+		searchByTitle(searchTerm: String, page: Int): SearchResults
+	}
+	
+	type SearchResults {
+		page: Int!
+		totalPages: Int!
+		total: Int!
+		results: [Movie]
 	}
 	
 	type Mutation {

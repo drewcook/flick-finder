@@ -94,6 +94,12 @@ app
 			app.render(req, res, actualPage, queryParams);
 		});
 
+		server.get("/search", (req, res) => {
+			const actualPage = "/Search";
+			const queryParams = {};
+			app.render(req, res, actualPage, queryParams);
+		});
+
 		server.get("/signin", (req, res) => {
 			const actualPage = "/SignIn";
 			const queryParams = {};
