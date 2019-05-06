@@ -27,7 +27,7 @@
 	"scripts": {
 		"dev": "NODE_ENV=development node server.js",
 		"build": "next build",
-		"start": "NODE_ENV=production node server.js",
+		"start": "NODE_ENV=production node server.js -p $PORT",
 		"deploy": "concurrently --names \"build,start\" \"npm run build\" \"npm start\"",
 		"export": "next export"
 	},
