@@ -32,9 +32,8 @@
 		"dev": "NODE_ENV=development node server.js",
 		"build": "next build",
 		"start": "NODE_ENV=production node server.js -p PORT",
-		"heroku-postbuild": "npm run export",
 		"export": "next export",
-		"deploy": "concurrently --names \"build,start\" \"npm run build\" \"npm start\""
+		"deploy": "concurrently --names \"build,export,start\" \"npm run build\" \"npm run export\" \"npm start\""
 	},
 	"repository": {
 		"type": "git",
