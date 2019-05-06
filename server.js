@@ -131,8 +131,9 @@ app
 		});
 
 		if (!dev) {
+			server.use(express.static("out/"));
 			server.get("*", (req, res) => {
-				return handle(req, res);
+				res.sendFile(path.resolve(__dirname, "out", "index.html"));
 			});
 		}
 

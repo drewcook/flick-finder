@@ -6,6 +6,7 @@
 .next
 dist
 src/api/db.json
+out/
 
 # Logs
 logs
