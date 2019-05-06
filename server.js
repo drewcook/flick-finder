@@ -52,7 +52,7 @@ app
 		// initial setup
 		const server = express();
 		server.use(cors({
-			origin: dev ? "http://localhost:3000" : `https://flickfinder.herokuapp.com`,
+			origin: `http://localhost:${PORT}`,
 			credentials: true
 		}));
 		server.use(favicon(path.join(__dirname, "/static/img/favicon.ico")));
