@@ -130,13 +130,6 @@ app
 			return handle(req, res);
 		});
 
-		if (!dev) {
-			server.use(express.static("out/"));
-			server.get("*", (req, res) => {
-				res.sendFile(path.resolve(__dirname, "out", "index.html"));
-			});
-		}
-
 		// listen
 		server.listen(PORT, (err) => {
 			if (err) throw err;

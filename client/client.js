@@ -2,6 +2,7 @@ const ApolloBoost = require("apollo-boost");
 const ApolloClient = ApolloBoost.default;
 const fetch = require("isomorphic-unfetch");
 
+require("dotenv").config({path: "variables.env"});
 const dev = process.env.NODE_ENV !== "production";
 
 const client = new ApolloClient({
