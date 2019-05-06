@@ -24,10 +24,14 @@
 		"react-notifications": "^1.4.3",
 		"serve-favicon": "^2.5.0"
 	},
+	"engines": {
+		"node": "10.15.3",
+		"npm": "6.4.1"
+	},
 	"scripts": {
 		"dev": "NODE_ENV=development node server.js",
 		"build": "next build",
-		"start": "NODE_ENV=production node server.js -p $PORT"
+		"start": "NODE_ENV=production node server.js -p PORT"
 	},
 	"repository": {
 		"type": "git",
