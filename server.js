@@ -1,5 +1,6 @@
 const express = require("express");
 const next = require("next");
+const path = require("path");
 
 // next wrapper
 require("dotenv").config({path: "variables.env"});
@@ -8,10 +9,10 @@ const app = next({dev});
 const handle = app.getRequestHandler();
 
 // middleware
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const compression = require("compression");
 const jwt = require("jsonwebtoken");
+const favicon = require("serve-favicon");
 
 // models
 const User = require("./models/User");
@@ -54,6 +55,8 @@ app
 			origin: dev ? "http://localhost:3000" : `https://flickfinder.herokuapp.com:${PORT}`,
 			credentials: true
 		}));
+		server.use(favicon(path.join(__dirname, "/static/img/favicon.ico")));
+
 		if (!dev) server.use(compression);
 
 		// apply JWT authentication middleware
