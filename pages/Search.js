@@ -1,7 +1,6 @@
 import Layout from "../client/components/Layout";
 import { ApolloConsumer } from "react-apollo";
 import { SEARCH_BY_TITLE } from "../queries";
-import LoadingModule from "../client/components/LoadingModule";
 import MovieCard from "../client/components/MovieCard";
 
 class Search extends React.Component {
@@ -23,7 +22,7 @@ class Search extends React.Component {
 	}
 
 	handleSearch = async (e, client) => {
-		e.preventDefault();
+		if (e.target.nodeName === "FORM") { e.preventDefault(); }
 		const { searchTerm, page } = this.state;
 		const { data } = await client.query({
 			query: SEARCH_BY_TITLE,
@@ -45,14 +44,40 @@ class Search extends React.Component {
 				<hr/>
 				<ApolloConsumer>
 					{client => (
-						<form onSubmit={e=>this.handleSearch(e, client)}>
-							<div className="form-group">
-								<p>Search through over 400,000 movie titles.</p>
-								<input type="search" className="form-control" id="searchTerm" name="searchTerm" value={searchTerm} onChange={this.handleChange} placeholder="Title, keywords, release data, etc." />
-							</div>
-							<button type="submit" className="btn btn-primary" disabled={searchTerm === ""}>Go!</button>
-							{/*error && <div className="errMsg">{error.message}</div>*/}
-						</form>
+						<div>
+							<form onSubmit={e=>this.handleSearch(e, client)}>
+								<div className="form-group">
+									<p>Search through over 400,000 movie titles.</p>
+									<input type="search" className="form-control" id="searchTerm" name="searchTerm" value={searchTerm} onChange={this.handleChange} placeholder="Title, keywords, release data, etc." />
+								</div>
+								<button type="submit" className="btn btn-primary" disabled={searchTerm === ""}>Go!</button>
+							</form>
+							{results && results.length &&
+								<div className="pagination">
+									<button
+										onClick={async (e) => {
+											e.persist();
+											await this.setState({page: page - 1});
+											this.handleSearch(e, client);
+										}}
+										className="btn btn-success"
+										disabled={page === 1}>
+										Prev Page
+									</button>
+									<span>Page {page} of {totalPages}</span>
+									<button
+										onClick={async (e) => {
+											e.persist();
+											await this.setState({page: page + 1});
+											this.handleSearch(e, client);
+										}}
+										className="btn btn-success"
+										disabled={page >= totalPages}>
+										Next Page
+									</button>
+								</div>
+							}
+						</div>
 					)}
 				</ApolloConsumer>
 				<div id="searchResults">
@@ -80,6 +105,13 @@ class Search extends React.Component {
 					}
 					.total {
 						margin-bottom: 20px;
+					}
+					.pagination {
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						max-width: 300px;
+						margin: 20px auto;
 					}
 				`}</style>
 			</Layout>
