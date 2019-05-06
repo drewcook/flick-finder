@@ -45,7 +45,7 @@ mongoose
 	.catch(err => console.log(err));
 
 // init app (heroku's assigned and local 3000)
-const PORT = process.env.PORT || 3000;
+const PORT = dev ? 3000 : process.env.PORT;
 app
 	.prepare()
 	.then(() => {
