@@ -7,6 +7,8 @@ For example, you can search for movies by genre, title, or the year it was relea
 ## Develop
 This app is built using Next.js, so it can easily be run using the built in server.
 
+First install all dependencies: `npm install`.
+
 To run the application locally, run the following command: `npm run dev`.
 
 The application will spin up on a local port.
