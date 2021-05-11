@@ -3,9 +3,9 @@ const next = require("next");
 const path = require("path");
 
 // next wrapper
-require("dotenv").config({path: "variables.env"});
 const dev = process.env.NODE_ENV !== "production";
-const app = next({dev});
+require("dotenv").config({ path: dev ? ".env" : "variables.env" });
+const app = next({ dev });
 const handle = app.getRequestHandler();
 
 // middleware
@@ -28,10 +28,10 @@ const aplServer = new ApolloServer({
 	context: ({ req }) => ({
 		User,
 		Movie,
-		currentUser: req.currentUser
+		currentUser: req.currentUser,
 	}),
 	engine: {
-		apiKey: process.env.ENGINE_API_KEY
+		apiKey: process.env.ENGINE_API_KEY,
 	},
 	introspection: true,
 	playground: dev,
@@ -40,25 +40,30 @@ const aplServer = new ApolloServer({
 // setup apollo client
 require("./client/client");
 
-
 // connect to database
 const mongoose = require("mongoose");
 mongoose
-	.connect(process.env.MONGO_URI, { useNewUrlParser: true })
+	.connect(process.env.MONGO_URI, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
 	.then(() => console.log("Mongo DB connected"))
-	.catch(err => console.log(err));
+	.catch((err) => console.log(err));
 
 // init app (heroku's assigned and local 3000)
 const PORT = process.env.PORT || 3000;
-app
-	.prepare()
+app.prepare()
 	.then(() => {
 		// initial setup
 		const server = express();
-		server.use(cors({
-			origin: dev ? "http://localhost:3000" : "https://flickfinder.herokuapp.com",
-			credentials: true
-		}));
+		server.use(
+			cors({
+				origin: dev
+					? "http://localhost:3000"
+					: "https://flickfinder.herokuapp.com",
+				credentials: true,
+			})
+		);
 		server.use(favicon(path.join(__dirname, "/static/img/favicon.ico")));
 
 		if (!dev) server.use(compression);
@@ -70,7 +75,10 @@ app
 			// get current user it is tied to
 			if (token !== "null" && token !== undefined) {
 				try {
-					const currentUser = await jwt.verify(token, process.env.USER_SECRET);
+					const currentUser = await jwt.verify(
+						token,
+						process.env.USER_SECRET
+					);
 					// add to request
 					req.currentUser = currentUser;
 				} catch (err) {
@@ -78,13 +86,15 @@ app
 				}
 			}
 			next();
-		})
+		});
 
 		// apply apollo server middleware
 		aplServer.applyMiddleware({ app: server });
 
 		if (dev) {
-			console.log(`GraphQL playground is available at ${aplServer.graphqlPath}`);
+			console.log(
+				`GraphQL playground is available at ${aplServer.graphqlPath}`
+			);
 		}
 
 		// route handlers
@@ -140,7 +150,7 @@ app
 			console.log(`App is listening on port: ${PORT}`);
 		});
 	})
-	.catch(ex => {
+	.catch((ex) => {
 		console.log(ex.stack);
 		process.exit(1);
 	});
