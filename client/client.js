@@ -3,7 +3,7 @@ const ApolloClient = ApolloBoost.default;
 const fetch = require("isomorphic-unfetch");
 
 const client = new ApolloClient({
-	uri: `${process.env.APP_HOST}/graphql`,
+	uri: "/graphql",
 	fetchOptions: {
 		credentials: "include",
 	},
