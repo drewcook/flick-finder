@@ -2,25 +2,47 @@ import Link from "next/link";
 
 const NavbarWithAuth = () => (
 	<nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-		<Link href="/"><a className="navbar-brand">FLICK FINDER</a></Link>
+		<Link href="/">
+			<a className="navbar-brand">FLICK FINDER</a>
+		</Link>
 		<div className="collapse navbar-collapse" id="navbarColor01">
 			<ul className="navbar-nav mr-auto">
 				<li className="nav-item active">
-					<Link href="/"><a className="nav-link" title="Home">Home</a></Link>
+					<Link href="/">
+						<a className="nav-link" title="Home">
+							Home
+						</a>
+					</Link>
 				</li>
 				<li className="nav-item">
-					<Link href="/Browse" as="/browse"><a className="nav-link" title="Browse">Trending</a></Link>
+					<Link href="/Browse" as="/browse">
+						<a className="nav-link" title="Browse">
+							Trending
+						</a>
+					</Link>
 				</li>
 				<li className="nav-item">
-					<Link href="/Search" as="search"><a className="nav-link" title="Search">Search</a></Link>
+					<Link href="/Search" as="search">
+						<a className="nav-link" title="Search">
+							Search
+						</a>
+					</Link>
 				</li>
 			</ul>
 			<ul className="navbar-nav">
 				<li className="nav-item">
-					<Link href="/Profile" as="/profile"><a className="nav-link" title="Profile">Profile</a></Link>
+					<Link href="/Profile" as="/profile">
+						<a className="nav-link" title="Profile">
+							Profile
+						</a>
+					</Link>
 				</li>
 				<li className="nav-item">
-					<Link href="/SignOut" as="/signout"><a className="nav-link" title="Sign Out">Sign Out</a></Link>
+					<Link href="/SignOut" as="/signout">
+						<a className="nav-link" title="Sign Out">
+							Sign Out
+						</a>
+					</Link>
 				</li>
 			</ul>
 		</div>
@@ -41,19 +63,33 @@ const NavbarWithAuth = () => (
 
 const NavbarWithOutAuth = () => (
 	<nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-		<Link href="/"><a className="navbar-brand">FLICK FINDER</a></Link>
+		<Link href="/">
+			<a className="navbar-brand">FLICK FINDER</a>
+		</Link>
 		<div className="collapse navbar-collapse" id="navbarColor01">
 			<ul className="navbar-nav mr-auto">
 				<li className="nav-item active">
-					<Link href="/"><a className="nav-link" title="Home">Home</a></Link>
+					<Link href="/">
+						<a className="nav-link" title="Home">
+							Home
+						</a>
+					</Link>
 				</li>
 			</ul>
 			<ul className="navbar-nav">
 				<li className="nav-item">
-					<Link href="/SignIn" as="/signin"><a className="nav-link" title="Sign In">Sign In</a></Link>
+					<Link href="/SignIn" as="/signin">
+						<a className="nav-link" title="Sign In">
+							Sign In
+						</a>
+					</Link>
 				</li>
 				<li className="nav-item">
-					<Link href="/SignUp" as="signup"><a className="nav-link" title="Sign Up">Sign Up</a></Link>
+					<Link href="/SignUp" as="signup">
+						<a className="nav-link" title="Sign Up">
+							Sign Up
+						</a>
+					</Link>
 				</li>
 			</ul>
 		</div>
@@ -73,9 +109,11 @@ const NavbarWithOutAuth = () => (
 );
 
 const Navbar = (props) => {
-	return props.session.getCurrentUser === null ?
-		<NavbarWithOutAuth/> :
-		<NavbarWithAuth/>;
-}
+	return props.session && props.session.getCurrentUser ? (
+		<NavbarWithAuth />
+	) : (
+		<NavbarWithOutAuth />
+	);
+};
 
 export default Navbar;
