@@ -15,14 +15,14 @@ const NavbarWithAuth = () => (
 					</Link>
 				</li>
 				<li className="nav-item">
-					<Link href="/Browse" as="/browse">
+					<Link href="/browse" as="/browse">
 						<a className="nav-link" title="Browse">
 							Trending
 						</a>
 					</Link>
 				</li>
 				<li className="nav-item">
-					<Link href="/Search" as="search">
+					<Link href="/search" as="search">
 						<a className="nav-link" title="Search">
 							Search
 						</a>
@@ -31,14 +31,14 @@ const NavbarWithAuth = () => (
 			</ul>
 			<ul className="navbar-nav">
 				<li className="nav-item">
-					<Link href="/Profile" as="/profile">
+					<Link href="/profile" as="/profile">
 						<a className="nav-link" title="Profile">
 							Profile
 						</a>
 					</Link>
 				</li>
 				<li className="nav-item">
-					<Link href="/SignOut" as="/signout">
+					<Link href="/signout" as="/signout">
 						<a className="nav-link" title="Sign Out">
 							Sign Out
 						</a>
@@ -78,14 +78,14 @@ const NavbarWithOutAuth = () => (
 			</ul>
 			<ul className="navbar-nav">
 				<li className="nav-item">
-					<Link href="/SignIn" as="/signin">
+					<Link href="/signin" as="/signin">
 						<a className="nav-link" title="Sign In">
 							Sign In
 						</a>
 					</Link>
 				</li>
 				<li className="nav-item">
-					<Link href="/SignUp" as="signup">
+					<Link href="/signup" as="signup">
 						<a className="nav-link" title="Sign Up">
 							Sign Up
 						</a>

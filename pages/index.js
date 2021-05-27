@@ -1,14 +1,22 @@
 import Layout from "../client/components/Layout";
 import Link from "next/link";
 
-const Index = props => (
+const Index = (props) => (
 	<Layout session={props.session} title="Welcome">
 		<div className="page-wrapper">
 			<div id="banner" className="carousel" data-ride="carousel">
 				<div className="carousel-inner">
 					<div className="carousel-item active">
-						<video className="d-block w-100" poster="https://ak9.picdn.net/shutterstock/videos/30171919/thumb/1.jpg" loop autoPlay>
-							<source src="https://ak9.picdn.net/shutterstock/videos/30171919/preview/stock-footage-front-view-of-an-old-fashioned-antique-super-mm-film-projector-projecting-a-beam-of-light-in-a.webm" type="video/webm" />
+						<video
+							className="d-block w-100"
+							poster="https://ak9.picdn.net/shutterstock/videos/30171919/thumb/1.jpg"
+							loop
+							autoPlay
+						>
+							<source
+								src="https://ak9.picdn.net/shutterstock/videos/30171919/preview/stock-footage-front-view-of-an-old-fashioned-antique-super-mm-film-projector-projecting-a-beam-of-light-in-a.webm"
+								type="video/webm"
+							/>
 						</video>
 					</div>
 				</div>
@@ -20,9 +28,15 @@ const Index = props => (
 				<div className="col-xs-12 col-md-6">
 					<div className="about">
 						<h3>About</h3>
-						<p>Flick Finder helps you find even the most obscure films. With well over 400,000 titles to search through, there's no reason to not find what you're looking for.</p>
+						<p>
+							Flick Finder helps you find even the most obscure films. With well
+							over 400,000 titles to search through, there's no reason to not
+							find what you're looking for.
+						</p>
 						<p>Why are you still sitting on your couch?</p>
-						<Link href="/SignUp" as="signup"><a className="btn btn-success">Get Started!</a></Link>
+						<Link href="/signup" as="signup">
+							<a className="btn btn-success">Get Started!</a>
+						</Link>
 					</div>
 				</div>
 				<div className="col-xs-12 col-sm-6">
@@ -37,10 +51,14 @@ const Index = props => (
 					</div>
 				</div>
 			</div>
-			<img src="/static/img/movie_db_green.jpg" alt="Powered by the Movie DB API" className="img-fluid" />
+			<img
+				src="/static/img/movie_db_green.jpg"
+				alt="Powered by the Movie DB API"
+				className="img-fluid"
+			/>
 			<style jsx>{`
 				.page-wrapper {
-					
+
 				}
 				#banner {
 					position: absolute;

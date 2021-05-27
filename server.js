@@ -52,15 +52,14 @@ mongoose
 
 // init app (heroku's assigned and local 3000)
 const PORT = process.env.PORT || 3000;
-app.prepare()
+app
+	.prepare()
 	.then(() => {
 		// initial setup
 		const server = express();
 		server.use(
 			cors({
-				origin: dev
-					? "http://localhost:3000"
-					: "https://flickfinder.herokuapp.com",
+				origin: process.env.APP_HOST,
 				credentials: true,
 			})
 		);
@@ -75,10 +74,7 @@ app.prepare()
 			// get current user it is tied to
 			if (token !== "null" && token !== undefined) {
 				try {
-					const currentUser = await jwt.verify(
-						token,
-						process.env.USER_SECRET
-					);
+					const currentUser = await jwt.verify(token, process.env.USER_SECRET);
 					// add to request
 					req.currentUser = currentUser;
 				} catch (err) {

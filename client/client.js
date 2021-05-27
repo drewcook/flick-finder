@@ -1,13 +1,8 @@
 const ApolloBoost = require("apollo-boost");
 const ApolloClient = ApolloBoost.default;
-const fetch = require("isomorphic-unfetch");
-
-const dev = process.env.NODE_ENV !== "production";
 
 const client = new ApolloClient({
-	uri: dev
-		? "http://localhost:3000/graphql"
-		: "https://flickfinder.herokuapp.com/graphql",
+	uri: `${process.env.APP_HOST}/graphql`,
 	fetchOptions: {
 		credentials: "include",
 	},
