@@ -8,13 +8,13 @@ const client = new ApolloClient({
 	uri: dev
 		? "http://localhost:3000/graphql"
 		: "https://flickfinder.herokuapp.com/graphql",
+	fetchOptions: {
+		credentials: "include",
+	},
 	request: (operation) => {
 		// pass along token with every http request to server for authentication
 		const token = localStorage.getItem("userToken");
 		operation.setContext({
-			fetchOptions: {
-				credentials: "include",
-			},
 			headers: {
 				authorization: token ? token : null,
 			},
