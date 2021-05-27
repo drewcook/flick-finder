@@ -1,6 +1,17 @@
 const express = require("express");
 const next = require("next");
 const path = require("path");
+import getConfig from "next/config";
+
+const {
+	publicServerConfig: {
+		APP_HOST,
+		ENGINE_API_KEY,
+		MONGO_URI,
+		PORT,
+		USER_SECRET,
+	},
+} = getConfig();
 
 // next wrapper
 const dev = process.env.NODE_ENV !== "production";
@@ -31,7 +42,7 @@ const aplServer = new ApolloServer({
 		currentUser: req.currentUser,
 	}),
 	engine: {
-		apiKey: process.env.ENGINE_API_KEY,
+		apiKey: ENGINE_API_KEY,
 	},
 	introspection: true,
 	playground: dev,
@@ -43,15 +54,14 @@ require("./client/client");
 // connect to database
 const mongoose = require("mongoose");
 mongoose
-	.connect(process.env.MONGO_URI, {
+	.connect(MONGO_URI, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
 	.then(() => console.log("Mongo DB connected"))
 	.catch((err) => console.log(err));
 
-// init app (heroku's assigned and local 3000)
-const PORT = process.env.PORT || 3000;
+// init app
 app
 	.prepare()
 	.then(() => {
@@ -59,11 +69,11 @@ app
 		const server = express();
 		server.use(
 			cors({
-				origin: process.env.APP_HOST,
+				origin: APP_HOST,
 				credentials: true,
 			})
 		);
-		server.use(favicon(path.join(__dirname, "/static/img/favicon.ico")));
+		server.use(favicon(path.join(__dirname, "/img/favicon.ico")));
 
 		if (!dev) server.use(compression);
 
@@ -74,7 +84,7 @@ app
 			// get current user it is tied to
 			if (token !== "null" && token !== undefined) {
 				try {
-					const currentUser = await jwt.verify(token, process.env.USER_SECRET);
+					const currentUser = await jwt.verify(token, USER_SECRET);
 					// add to request
 					req.currentUser = currentUser;
 				} catch (err) {
@@ -140,10 +150,11 @@ app
 			return handle(req, res);
 		});
 
-		// listen
-		server.listen(PORT, (err) => {
+		// listen on provided port (Heroku) or 3000 by default
+		const port = PORT || 3000;
+		server.listen(port, (err) => {
 			if (err) throw err;
-			console.log(`App is listening on port: ${PORT}`);
+			console.log(`App is listening on port: ${port}`);
 		});
 	})
 	.catch((ex) => {
