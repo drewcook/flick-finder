@@ -29,9 +29,9 @@
 		"npm": "6.x"
 	},
 	"scripts": {
-		"dev": "NODE_ENV=development node server.js",
+		"dev": "next dev",
 		"build": "next build",
-		"start": "node server.js -p $PORT",
+		"start": "next start -p $PORT",
 		"deploy": "concurrently --names \"build,start\" \"npm run build\" \"npm start\""
 	},
 	"repository": {
