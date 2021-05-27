@@ -1,3 +1,4 @@
+import { Component } from "react";
 import Layout from "../client/components/Layout";
 import LoadingModule from "../client/components/LoadingModule";
 import MovieRating from "../client/components/MovieRating";
@@ -12,7 +13,7 @@ import {
 import Link from "next/link";
 import { NotificationManager } from "react-notifications";
 
-class Movie extends React.Component {
+class Movie extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
