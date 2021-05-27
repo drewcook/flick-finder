@@ -62,7 +62,7 @@ const NavbarWithAuth = () => (
 );
 
 const NavbarWithOutAuth = () => (
-	<nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+	<nav className="navbar navbar-expand-sm navbar-dark bg-primary">
 		<Link href="/">
 			<a className="navbar-brand">FLICK FINDER</a>
 		</Link>
