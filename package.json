@@ -4,7 +4,7 @@
 	"description": "Flick Finder helps you find movies and TV shows to watch in an organized manner",
 	"main": "index.js",
 	"dependencies": {
-		"apollo-boost": "^0.4.9",
+		"@apollo/client": "^3.3.19",
 		"apollo-server-express": "^2.25.0",
 		"bcrypt": "^5.0.1",
 		"body-parser": "^1.19.0",
@@ -19,7 +19,6 @@
 		"mongoose": "^5.12.12",
 		"next": "^10.2.3",
 		"react": "^17.0.2",
-		"react-apollo": "^3.1.5",
 		"react-dom": "^17.0.2",
 		"react-notifications": "^1.7.2",
 		"serve-favicon": "^2.5.0"
