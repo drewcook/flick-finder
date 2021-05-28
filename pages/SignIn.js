@@ -1,6 +1,6 @@
 import { Component } from "react";
 import Layout from "../client/components/Layout";
-import { Mutation } from "react-apollo";
+import { useMutation } from "@apollo/client";
 import { SIGN_IN_USER } from "../mutations";
 import Router from "next/router";
 

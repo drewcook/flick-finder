@@ -1,4 +1,4 @@
-const { gql } = require("apollo-boost");
+const { gql } = require("@apollo/client");
 
 /* Users */
 export const GET_CURRENT_USER = gql`
@@ -15,7 +15,7 @@ export const GET_CURRENT_USER = gql`
 `;
 
 export const GET_WATCHLIST = gql`
-	query($email: String!) {
+	query ($email: String!) {
 		getWatchlist(userEmail: $email) {
 			id
 			title
@@ -30,17 +30,17 @@ export const GET_WATCHLIST = gql`
 `;
 
 export const GET_FAVORITES = gql`
-	query($email: String!) {
-	  getFavorites(userEmail: $email) {
-	    id
-	    title
-	    genres {
-	      name
-	    }
-	    posterPath
-	    releaseDate
-	    voteAverage
-	  }
+	query ($email: String!) {
+		getFavorites(userEmail: $email) {
+			id
+			title
+			genres {
+				name
+			}
+			posterPath
+			releaseDate
+			voteAverage
+		}
 	}
 `;
 
@@ -64,7 +64,7 @@ export const GET_TRENDING_MOVIES = gql`
 `;
 
 export const GET_MOVIE_BY_ID = gql`
-	query($id: Int!) {
+	query ($id: Int!) {
 		getMovieById(id: $id) {
 			id
 			title
@@ -83,7 +83,7 @@ export const GET_MOVIE_BY_ID = gql`
 `;
 
 export const SEARCH_BY_TITLE = gql`
-	query($searchTerm: String!, $page: Int!) {
+	query ($searchTerm: String!, $page: Int!) {
 		searchByTitle(searchTerm: $searchTerm, page: $page) {
 			page
 			totalPages
@@ -98,4 +98,3 @@ export const SEARCH_BY_TITLE = gql`
 		}
 	}
 `;
-

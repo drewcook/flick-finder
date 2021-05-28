@@ -1,6 +1,6 @@
 import { Component } from "react";
 import Layout from "../client/components/Layout";
-import { ApolloConsumer } from "react-apollo";
+import { ApolloConsumer } from "@apollo/client";
 import { SEARCH_BY_TITLE } from "../queries";
 import MovieCard from "../client/components/MovieCard";
 
