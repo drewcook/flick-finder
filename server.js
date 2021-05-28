@@ -1,21 +1,15 @@
 const express = require("express");
 const next = require("next");
 const path = require("path");
-import getConfig from "next/config";
-
+const getConfig = require("next/config");
+require();
 const {
-	publicServerConfig: {
-		APP_HOST,
-		ENGINE_API_KEY,
-		MONGO_URI,
-		PORT,
-		USER_SECRET,
-	},
+	publicServerConfig: { APP_HOST, MONGO_URI, PORT, USER_SECRET },
 } = getConfig();
 
 // next wrapper
 const dev = process.env.NODE_ENV !== "production";
-require("dotenv").config({ path: dev ? ".env" : "variables.env" });
+// require("dotenv").config({ path: dev ? ".env" : "variables.env" });
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
@@ -29,27 +23,8 @@ const favicon = require("serve-favicon");
 const User = require("./models/User");
 const Movie = require("./models/Movie");
 
-// apollo/graphQL setup & bind mongoose models
-const { ApolloServer } = require("apollo-server-express");
-const { typeDefs } = require("./schema");
-const { resolvers } = require("./resolvers");
-const aplServer = new ApolloServer({
-	typeDefs,
-	resolvers,
-	context: ({ req }) => ({
-		User,
-		Movie,
-		currentUser: req.currentUser,
-	}),
-	engine: {
-		apiKey: ENGINE_API_KEY,
-	},
-	introspection: true,
-	playground: dev,
-	debug: dev,
-});
-// setup apollo client
-require("./client/client");
+// get Apollo Server for GraphQL
+const apolloServer = require("./lib/apolloServer");
 
 // connect to database
 const mongoose = require("mongoose");
@@ -95,11 +70,11 @@ app
 		});
 
 		// apply apollo server middleware
-		aplServer.applyMiddleware({ app: server });
+		apolloServer.applyMiddleware({ app: server });
 
 		if (dev) {
 			console.log(
-				`GraphQL playground is available at ${aplServer.graphqlPath}`
+				`GraphQL playground is available at ${apolloServer.graphqlPath}`
 			);
 		}
 

@@ -1,6 +1,6 @@
 import App from "next/app";
 import { ApolloProvider } from "react-apollo";
-import { client } from "../client/client.js";
+import apolloClient from "../lib/apolloClient";
 import withSession from "../client/components/withSession";
 
 class FlickFinder extends App {
@@ -8,7 +8,7 @@ class FlickFinder extends App {
 		const { Component } = this.props;
 		const Root = withSession(Component);
 		return (
-			<ApolloProvider client={client}>
+			<ApolloProvider client={apolloClient}>
 				<Root {...this.props} />
 			</ApolloProvider>
 		);
