@@ -26,6 +26,18 @@ const Movie = (props) => {
 	const { data, loading, error } = useQuery(GET_MOVIE_BY_ID, {
 		variables: { id: movieId },
 	});
+	const [addToWatchlist, {}] = useMutation(ADD_TO_WATCHLIST, {
+		variables: { email: user.email, movieId: details.id },
+	});
+	const [removeFromWatchlist, {}] = useMutation(REMOVE_FROM_WATCHLIST, {
+		variables: { email: user.email, movieId: details.id },
+	});
+	const [addToFavorites, {}] = useMutation(ADD_TO_FAVORITES, {
+		variables: { email: user.email, movieId: details.id },
+	});
+	const [removeFromFavorites, {}] = useMutation(REMOVE_FROM_FAVORITES, {
+		variables: { email: user.email, movieId: details.id },
+	});
 
 	const toggleWatchlist = (callback, didAdd) =>
 		callback()
@@ -105,64 +117,34 @@ const Movie = (props) => {
 						</p>
 						<div className="btn-group">
 							{!isWatchlisted ? (
-								<Mutation
-									mutation={ADD_TO_WATCHLIST}
-									variables={{ email: user.email, movieId: details.id }}
+								<button
+									className="btn btn-dark"
+									onClick={() => toggleWatchlist(addToWatchlist, true)}
 								>
-									{(addToWatchlist) => (
-										<button
-											className="btn btn-dark"
-											onClick={() => toggleWatchlist(addToWatchlist, true)}
-										>
-											Add To Watchlist <i className="far fa-eye"></i>
-										</button>
-									)}
-								</Mutation>
+									Add To Watchlist <i className="far fa-eye"></i>
+								</button>
 							) : (
-								<Mutation
-									mutation={REMOVE_FROM_WATCHLIST}
-									variables={{ email: user.email, movieId: details.id }}
+								<button
+									className="btn btn-dark"
+									onClick={() => toggleWatchlist(removeFromWatchlist, false)}
 								>
-									{(removeFromWatchlist) => (
-										<button
-											className="btn btn-dark"
-											onClick={() =>
-												toggleWatchlist(removeFromWatchlist, false)
-											}
-										>
-											Remove From Watchlist <i className="far fa-eye-slash"></i>
-										</button>
-									)}
-								</Mutation>
+									Remove From Watchlist <i className="far fa-eye-slash"></i>
+								</button>
 							)}
 							{!isFavorited ? (
-								<Mutation
-									mutation={ADD_TO_FAVORITES}
-									variables={{ email: user.email, movieId: details.id }}
+								<button
+									className="btn btn-danger"
+									onClick={() => toggleFavorite(addToFavorites, true)}
 								>
-									{(addToFavorites) => (
-										<button
-											className="btn btn-danger"
-											onClick={() => toggleFavorite(addToFavorites, true)}
-										>
-											Add To Favorites <i className="far fa-heart"></i>
-										</button>
-									)}
-								</Mutation>
+									Add To Favorites <i className="far fa-heart"></i>
+								</button>
 							) : (
-								<Mutation
-									mutation={REMOVE_FROM_FAVORITES}
-									variables={{ email: user.email, movieId: details.id }}
+								<button
+									className="btn btn-danger"
+									onClick={() => toggleFavorite(removeFromFavorites, false)}
 								>
-									{(removeFromFavorites) => (
-										<button
-											className="btn btn-danger"
-											onClick={() => toggleFavorite(removeFromFavorites, false)}
-										>
-											Remove From Favorites <i className="fas fa-heart"></i>
-										</button>
-									)}
-								</Mutation>
+									Remove From Favorites <i className="fas fa-heart"></i>
+								</button>
 							)}
 						</div>
 					</div>

@@ -20,6 +20,24 @@ const Profile = (props) => {
 	} = useQuery(GET_FAVORITES, {
 		variables: { email: user.email },
 	});
+	const [removeFromWatchlist, {}] = useMutation(REMOVE_FROM_WATCHLIST, {
+		variables: { email: user.email, movieId: movie.id },
+		refetchQueries: [
+			{
+				query: GET_WATCHLIST,
+				variables: { email: user.email },
+			},
+		],
+	});
+	const [removeFromFavorites, {}] = useMutation(REMOVE_FROM_FAVORITES, {
+		variables: { email: user.email, movieId: movie.id },
+		refetchQueries: [
+			{
+				query: GET_FAVORITES,
+				variables: { email: user.email },
+			},
+		],
+	});
 
 	const formatDate = (date) => {
 		const newDate = new Date(date).toLocaleDateString("en-US");
@@ -121,28 +139,12 @@ const Profile = (props) => {
 											<Link href={`/movie/${movie.id}`}>
 												<button className="btn btn-sm btn-info">Details</button>
 											</Link>
-											<Mutation
-												mutation={REMOVE_FROM_WATCHLIST}
-												variables={{
-													email: user.email,
-													movieId: movie.id,
-												}}
-												refetchQueries={[
-													{
-														query: GET_WATCHLIST,
-														variables: { email: user.email },
-													},
-												]}
+											<button
+												className="btn btn-sm btn-danger"
+												onClick={() => removeWatchlist(removeFromWatchlist)}
 											>
-												{(removeFromWatchlist) => (
-													<button
-														className="btn btn-sm btn-danger"
-														onClick={() => removeWatchlist(removeFromWatchlist)}
-													>
-														Remove <i className="fas fa-times"></i>
-													</button>
-												)}
-											</Mutation>
+												Remove <i className="fas fa-times"></i>
+											</button>
 										</div>
 									</div>
 								</div>
@@ -191,25 +193,12 @@ const Profile = (props) => {
 													Details <i className="fas fa-info-circle"></i>
 												</button>
 											</Link>
-											<Mutation
-												mutation={REMOVE_FROM_FAVORITES}
-												variables={{ email: user.email, movieId: movie.id }}
-												refetchQueries={[
-													{
-														query: GET_FAVORITES,
-														variables: { email: user.email },
-													},
-												]}
+											<button
+												className="btn btn-sm btn-danger"
+												onClick={() => removeFavorite(removeFromFavorites)}
 											>
-												{(removeFromFavorites) => (
-													<button
-														className="btn btn-sm btn-danger"
-														onClick={() => removeFavorite(removeFromFavorites)}
-													>
-														Remove <i className="fas fa-times"></i>
-													</button>
-												)}
-											</Mutation>
+												Remove <i className="fas fa-times"></i>
+											</button>
 										</div>
 									</div>
 								</div>
