@@ -1,11 +1,7 @@
+require("dotenv").config();
 const express = require("express");
 const next = require("next");
 const path = require("path");
-const getConfig = require("next/config");
-require();
-const {
-	publicServerConfig: { APP_HOST, MONGO_URI, PORT, USER_SECRET },
-} = getConfig();
 
 // next wrapper
 const dev = process.env.NODE_ENV !== "production";
@@ -19,17 +15,13 @@ const compression = require("compression");
 const jwt = require("jsonwebtoken");
 const favicon = require("serve-favicon");
 
-// models
-const User = require("./models/User");
-const Movie = require("./models/Movie");
-
 // get Apollo Server for GraphQL
-const apolloServer = require("./lib/apolloServer");
+const initApolloServer = require("./lib/apolloServer");
 
 // connect to database
 const mongoose = require("mongoose");
 mongoose
-	.connect(MONGO_URI, {
+	.connect(process.env.MONGO_URI, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
@@ -39,12 +31,12 @@ mongoose
 // init app
 app
 	.prepare()
-	.then(() => {
+	.then(async () => {
 		// initial setup
 		const server = express();
 		server.use(
 			cors({
-				origin: APP_HOST,
+				origin: process.env.APP_HOST,
 				credentials: true,
 			})
 		);
@@ -59,7 +51,7 @@ app
 			// get current user it is tied to
 			if (token !== "null" && token !== undefined) {
 				try {
-					const currentUser = await jwt.verify(token, USER_SECRET);
+					const currentUser = await jwt.verify(token, process.env.USER_SECRET);
 					// add to request
 					req.currentUser = currentUser;
 				} catch (err) {
@@ -70,7 +62,9 @@ app
 		});
 
 		// apply apollo server middleware
-		apolloServer.applyMiddleware({ app: server });
+		initApolloServer()
+			.applyMiddleware({ app: server })
+			.then((d) => console.log("apply apollo server middleware", d));
 
 		if (dev) {
 			console.log(
@@ -126,7 +120,7 @@ app
 		});
 
 		// listen on provided port (Heroku) or 3000 by default
-		const port = PORT || 3000;
+		const port = process.env.PORT || 3000;
 		server.listen(port, (err) => {
 			if (err) throw err;
 			console.log(`App is listening on port: ${port}`);

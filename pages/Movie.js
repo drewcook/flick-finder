@@ -13,7 +13,7 @@ import {
 import Link from "next/link";
 import { NotificationManager } from "react-notifications";
 
-const Movie = (props) => {
+const MoviePage = (props) => {
 	const { session, pageProps, refetch } = props;
 	const user = session.getCurrentUser;
 	const movieId = parseInt(pageProps.movie.id);
@@ -196,4 +196,4 @@ export const getInitialProps = async ({ query }) => {
 	};
 };
 
-export default Movie;
+export default MoviePage;
