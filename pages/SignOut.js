@@ -1,24 +1,29 @@
-import { ApolloConsumer } from "react-apollo";
+import { ApolloConsumer } from "@apollo/client";
 import Router from "next/router";
 import Layout from "../client/components/Layout";
 
-const handleSignout = client => {
+const handleSignout = (client) => {
 	// clear token
 	localStorage.removeItem("userToken");
 	// reset provider store
 	client.resetStore();
 	// redirect
 	Router.push("/");
-}
+};
 
-const SignOut = props => (
+const SignOut = (props) => (
 	<ApolloConsumer>
-		{client => {
+		{(client) => {
 			return (
 				<Layout session={props.session} title="Sign Out">
 					<div>
 						<h2>We'll see you soon!</h2>
-						<button className="btn btn-primary" onClick={() => handleSignout(client)}>Sign Out</button>
+						<button
+							className="btn btn-primary"
+							onClick={() => handleSignout(client)}
+						>
+							Sign Out
+						</button>
 					</div>
 					<style jsx>{`
 						div {

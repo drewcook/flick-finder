@@ -52,7 +52,7 @@ const Index = (props) => (
 				</div>
 			</div>
 			<img
-				src="/static/img/movie_db_green.jpg"
+				src="/img/movie_db_green.jpg"
 				alt="Powered by the Movie DB API"
 				className="img-fluid"
 			/>

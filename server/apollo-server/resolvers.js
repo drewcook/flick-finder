@@ -1,37 +1,38 @@
+require("dotenv").config();
 const fetch = require("isomorphic-unfetch");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-
-// bring in env vars
-require("dotenv").config({path: "variables.env"});
 
 // utilize jwt to work with creating a user
 // returns a jwt token string
 const createToken = (user, secret, expiresIn) => {
 	const { firstName, lastName, email } = user;
 	return jwt.sign({ firstName, lastName, email }, secret, { expiresIn });
-}
+};
 
 function movieDbPath(endpoint) {
-	return `${process.env.MOVIEDB_BASEURL + endpoint}?api_key=${process.env.MOVIEDB_APIKEY}`;
+	return `${process.env.MOVIEDB_BASEURL + endpoint}?api_key=${
+		process.env.MOVIEDB_APIKEY
+	}`;
 }
 
 function movieDbSearch(endpoint, queryString) {
-	return `${process.env.MOVIEDB_BASEURL + endpoint}?api_key=${process.env.MOVIEDB_APIKEY}&${queryString}`;
+	return `${process.env.MOVIEDB_BASEURL + endpoint}?api_key=${
+		process.env.MOVIEDB_APIKEY
+	}&${queryString}`;
 }
 
-exports.resolvers = {
+module.exports = {
 	Query: {
 		// Users
 		getCurrentUser: async (root, args, { currentUser, User }) => {
 			if (!currentUser) return null;
-			// find user based on context we've assign at server
+			// find user based on context we've assign at apollo server
 			// redirect to profile page
-			const user = await User.findOne({email: currentUser.email})
-				.populate({
-					path: "profile",
-					//model: "Profile"
-				});
+			const user = await User.findOne({ email: currentUser.email }).populate({
+				path: "profile",
+				//model: "Profile"
+			});
 			return user;
 		},
 		getWatchlist: async (root, { userEmail }, { User }) => {
@@ -49,7 +50,7 @@ exports.resolvers = {
 					posterPath: process.env.MOVIEDB_IMG_BASE + movieData.poster_path,
 					popularity: movieData.popularity,
 					runtime: movieData.runtime,
-					voteAverage: movieData.vote_average
+					voteAverage: movieData.vote_average,
 				};
 			});
 		},
@@ -68,7 +69,7 @@ exports.resolvers = {
 					posterPath: process.env.MOVIEDB_IMG_BASE + movieData.poster_path,
 					popularity: movieData.popularity,
 					runtime: movieData.runtime,
-					voteAverage: movieData.vote_average
+					voteAverage: movieData.vote_average,
 				};
 			});
 		},
@@ -78,17 +79,17 @@ exports.resolvers = {
 			const trendingData = await trending.json();
 			const genres = await fetch(movieDbPath("/genre/movie/list"));
 			const genreData = await genres.json();
-			return trendingData.results.map(item => ({
+			return trendingData.results.map((item) => ({
 				id: item.id,
-				genres: item.genre_ids.map(genre => ({
+				genres: item.genre_ids.map((genre) => ({
 					id: genre,
-					name: genreData.genres.filter(item => item.id === genre)[0].name
+					name: genreData.genres.filter((item) => item.id === genre)[0].name,
 				})),
 				overview: item.overview,
 				popularity: item.popularity,
 				posterPath: process.env.MOVIEDB_IMG_BASE + item.poster_path,
 				releaseDate: item.release_date,
-				title: item.title
+				title: item.title,
 			}));
 		},
 		getMovieById: async (root, { id }, { Movie }) => {
@@ -104,31 +105,40 @@ exports.resolvers = {
 				posterPath: process.env.MOVIEDB_IMG_BASE + movieData.poster_path,
 				popularity: movieData.popularity,
 				runtime: movieData.runtime,
-				voteAverage: movieData.vote_average
-			}
+				voteAverage: movieData.vote_average,
+			};
 		},
 		searchByTitle: async (root, { searchTerm, page }, { Movie }) => {
-			if (!searchTerm) return {page: 1, totalPages: 1, total: 0, results: []};
-			const res = await fetch(movieDbSearch("/search/movie", `language=en-US&query=${searchTerm}&page=${page}&include_adult=false`));
+			if (!searchTerm) return { page: 1, totalPages: 1, total: 0, results: [] };
+			const res = await fetch(
+				movieDbSearch(
+					"/search/movie",
+					`language=en-US&query=${searchTerm}&page=${page}&include_adult=false`
+				)
+			);
 			const resultsData = await res.json();
-			const results = resultsData.results.map(movie => ({
+			const results = resultsData.results.map((movie) => ({
 				id: movie.id,
 				popularity: movie.popularity,
 				posterPath: process.env.MOVIEDB_IMG_BASE + movie.poster_path,
 				releaseDate: movie.release_date,
-				title: movie.title
+				title: movie.title,
 			}));
 			return {
 				page: resultsData.page,
 				totalPages: resultsData.total_pages,
 				total: resultsData.total_results,
-				results
+				results,
 			};
-		}
+		},
 	},
 	Mutation: {
 		// Users
-		signUpUser: async (root, {firstName, lastName, email, password}, { User }) => {
+		signUpUser: async (
+			root,
+			{ firstName, lastName, email, password },
+			{ User }
+		) => {
 			// don't allow duplicate user (based off email)
 			const user = await User.findOne({ email });
 			if (user) throw new Error("User already exists");
@@ -137,12 +147,12 @@ exports.resolvers = {
 				firstName,
 				lastName,
 				email,
-				password
+				password,
 			}).save();
 			// return the jwt (valid only for an hour for this app's purposes)
 			return { token: createToken(newUser, process.env.USER_SECRET, "4hr") };
 		},
-		signInUser: async (root, {email, password}, { User }) => {
+		signInUser: async (root, { email, password }, { User }) => {
 			const user = await User.findOne({ email });
 			if (!user) throw new Error("User not found");
 			// check if valid pw
@@ -151,38 +161,42 @@ exports.resolvers = {
 			// return the jwt (valid only for an hour for this app's purposes)
 			return { token: createToken(user, process.env.USER_SECRET, "4hr") };
 		},
-		addToWatchlist: async (root, {userEmail, movieId}, { User }) => {
-			const user = await User.findOne({ email: userEmail});
+		addToWatchlist: async (root, { userEmail, movieId }, { User }) => {
+			const user = await User.findOne({ email: userEmail });
 			if (!user) throw new Error("User not found");
-			if (user.watchlist.includes(movieId)) throw new Error("Movie already on watchlist");
+			if (user.watchlist.includes(movieId))
+				throw new Error("Movie already on watchlist");
 			user.watchlist = [...user.watchlist, movieId];
 			user.save();
 			return true;
 		},
-		removeFromWatchlist: async (root, {userEmail, movieId}, { User }) => {
-			const user = await User.findOne({ email: userEmail});
+		removeFromWatchlist: async (root, { userEmail, movieId }, { User }) => {
+			const user = await User.findOne({ email: userEmail });
 			if (!user) throw new Error("User not found");
-			if (!user.watchlist.includes(movieId)) throw new Error("Movie not on watchlist");
-			user.watchlist = user.watchlist.filter(id => id !== movieId);
+			if (!user.watchlist.includes(movieId))
+				throw new Error("Movie not on watchlist");
+			user.watchlist = user.watchlist.filter((id) => id !== movieId);
 			user.save();
 			return true;
 		},
-		addToFavorites: async (root, {userEmail, movieId}, { User }) => {
-			const user = await User.findOne({ email: userEmail});
+		addToFavorites: async (root, { userEmail, movieId }, { User }) => {
+			const user = await User.findOne({ email: userEmail });
 			if (!user) throw new Error("User not found");
-			if (user.favorites.includes(movieId)) throw new Error("Movie already on favorites list");
+			if (user.favorites.includes(movieId))
+				throw new Error("Movie already on favorites list");
 			user.favorites = [...user.favorites, movieId];
 			user.save();
 			return true;
 		},
-		removeFromFavorites: async (root, {userEmail, movieId}, { User }) => {
-			const user = await User.findOne({ email: userEmail});
+		removeFromFavorites: async (root, { userEmail, movieId }, { User }) => {
+			const user = await User.findOne({ email: userEmail });
 			if (!user) throw new Error("User not found");
-			if (!user.favorites.includes(movieId)) throw new Error("Movie not on favorites list");
-			user.favorites = user.favorites.filter(id => id !== movieId);
+			if (!user.favorites.includes(movieId))
+				throw new Error("Movie not on favorites list");
+			user.favorites = user.favorites.filter((id) => id !== movieId);
 			user.save();
 			return true;
 		},
 	},
-	User: {}
+	User: {},
 };

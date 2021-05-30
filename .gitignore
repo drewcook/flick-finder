@@ -5,10 +5,9 @@
 # Project ignores
 .next
 dist
-src/api/db.json
 out/
-.localvars
 .env
+*.local
 
 # Logs
 logs
