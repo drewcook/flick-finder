@@ -99,7 +99,9 @@ const Index = (props) => (
 				h3 {
 					margin: 0 0 20px;
 				}
-				.about {}
+				.about .btn {
+					margin-bottom: 30px;
+				}
 				.features {}
 				ul {
 					list-style-type: circle;
