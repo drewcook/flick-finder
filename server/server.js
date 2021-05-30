@@ -12,9 +12,6 @@ const app = next({
 });
 const handler = app.getRequestHandler();
 
-// middleware
-// const cors = require("cors");
-
 // connect to database
 require("./startup/database");
 
@@ -22,8 +19,10 @@ require("./startup/database");
 app
 	.prepare()
 	.then(() => {
+		// init express
 		const server = express();
-		// setup the Apollo Server at the Next.js API route
+
+		// setup apollo server
 		const apolloServer = require("./apollo-server/apolloServer");
 		apolloServer.applyMiddleware({ app: server });
 		if (!production) {
@@ -31,12 +30,6 @@ app
 				`GraphQL playground is available at ${apolloServer.graphqlPath}`
 			);
 		}
-		// server.use(
-		// 	cors({
-		// 		origin: process.env.APP_HOST,
-		// 		credentials: true,
-		// 	})
-		// );
 
 		// favicon
 		server.use(favicon(path.join(__dirname, "../public/img/favicon.ico")));
