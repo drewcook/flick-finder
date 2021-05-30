@@ -16,6 +16,7 @@
 		"express": "^4.17.1",
 		"graphql": "^15.5.0",
 		"graphql-tools": "^7.0.5",
+		"helmet": "^4.6.0",
 		"isomorphic-unfetch": "^3.1.0",
 		"jsonwebtoken": "^8.5.1",
 		"lodash": "^4.17.21",
@@ -31,9 +32,9 @@
 		"npm": "6.x"
 	},
 	"scripts": {
-		"dev": "next dev",
+		"dev": "node ./server/server.js",
 		"build": "next build",
-		"start": "next start -p $PORT",
+		"start": "NODE_ENV=production node ./server/server.js -p $PORT",
 		"deploy": "concurrently --names \"build,start\" \"npm run build\" \"npm start\""
 	},
 	"repository": {
