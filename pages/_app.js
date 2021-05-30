@@ -1,20 +1,18 @@
 import App from "next/app";
 import { ApolloProvider } from "@apollo/client";
-import { initializeApollo } from "../lib/apolloClient";
+import { useApollo } from "../lib/apolloClient";
 import withSession from "../client/components/withSession";
 
-class FlickFinder extends App {
-	render() {
-		const { Component } = this.props;
-		const Root = withSession(Component);
-		const apolloClient = initializeApollo();
+const FlickFinder = (props) => {
+	const { Component, pageProps } = props;
+	const Root = withSession(Component);
+	const apolloClient = useApollo(pageProps);
 
-		return (
-			<ApolloProvider client={apolloClient}>
-				<Root {...this.props} />
-			</ApolloProvider>
-		);
-	}
-}
+	return (
+		<ApolloProvider client={apolloClient}>
+			<Root {...pageProps} />
+		</ApolloProvider>
+	);
+};
 
 export default FlickFinder;
