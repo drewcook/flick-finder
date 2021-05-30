@@ -1,19 +1,19 @@
 require("dotenv").config();
 const express = require("express");
+const favicon = require("serve-favicon");
 const next = require("next");
 const path = require("path");
 
 // next wrapper
 const production = process.env.NODE_ENV === "production";
-const app = next({ dev: !production });
+const app = next({
+	dev: !production,
+	dir: path.join(__dirname, "../"),
+});
 const handler = app.getRequestHandler();
 
 // middleware
-const cors = require("cors");
-const favicon = require("serve-favicon");
-
-// get Apollo Server for GraphQL
-const initApolloServer = require("../lib/apolloServer");
+// const cors = require("cors");
 
 // connect to database
 require("./startup/database");
@@ -21,8 +21,16 @@ require("./startup/database");
 // init app
 app
 	.prepare()
-	.then(async () => {
+	.then(() => {
 		const server = express();
+		// setup the Apollo Server at the Next.js API route
+		const apolloServer = require("./apollo-server/apolloServer");
+		apolloServer.applyMiddleware({ app: server });
+		if (!production) {
+			console.log(
+				`GraphQL playground is available at ${apolloServer.graphqlPath}`
+			);
+		}
 		// server.use(
 		// 	cors({
 		// 		origin: process.env.APP_HOST,
@@ -41,16 +49,6 @@ app
 
 		// setup routes
 		require("./startup/routes")(server, handler);
-
-		// setup apollo server
-		// initApolloServer()
-		// 	.applyMiddleware({ app: server })
-		// 	.then((d) => console.log("apply apollo server middleware", d));
-		// if (!production) {
-		// 	console.log(
-		// 		`GraphQL playground is available at ${apolloServer.graphqlPath}`
-		// 	);
-		// }
 
 		// apply production middleware
 		if (production) require("./startup/productionMiddleware")(server);

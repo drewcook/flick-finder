@@ -148,7 +148,7 @@ module.exports = {
 				password,
 			}).save();
 			// return the jwt (valid only for an hour for this app's purposes)
-			return { token: createToken(newUser, USER_SECRET, "4hr") };
+			return { token: createToken(newUser, process.env.USER_SECRET, "4hr") };
 		},
 		signInUser: async (root, { email, password }, { User }) => {
 			const user = await User.findOne({ email });
@@ -157,7 +157,7 @@ module.exports = {
 			const isValidPassword = await bcrypt.compare(password, user.password);
 			if (!isValidPassword) throw new Error("Invalid password");
 			// return the jwt (valid only for an hour for this app's purposes)
-			return { token: createToken(user, USER_SECRET, "4hr") };
+			return { token: createToken(user, process.env.USER_SECRET, "4hr") };
 		},
 		addToWatchlist: async (root, { userEmail, movieId }, { User }) => {
 			const user = await User.findOne({ email: userEmail });

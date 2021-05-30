@@ -8,8 +8,6 @@ const {
 	publicRuntimeConfig: { APP_HOST },
 } = getConfig();
 
-console.log({ APP_HOST });
-
 const authLink = setContext((request, ctx) => {
 	// get the token from localstorage for client-side requests
 	// not supporting server authenticated requests ATM
@@ -28,7 +26,7 @@ export default function createFetchLink(ctx) {
 	const BASE_URL = process.browser === false ? APP_HOST : "";
 
 	const defaultLink = createHttpLink({
-		uri: `${BASE_URL}/api/graphql`,
+		uri: `${BASE_URL}/graphql`,
 		fetch,
 		credentials: "same-origin",
 		headers: _get(ctx, "req.headers"), // Pass headers through on server -> server calls

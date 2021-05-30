@@ -1,6 +1,6 @@
 import App from "next/app";
 import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "../lib/apolloClient";
+import { useApollo } from "../client/apollo-client/apolloClient";
 import withSession from "../client/components/withSession";
 
 const FlickFinder = (props) => {
