@@ -1,42 +1,49 @@
-import { Component } from "react";
-import Layout from "../client/components/Layout";
-import LoadingModule from "../client/components/LoadingModule";
-import MovieRating from "../client/components/MovieRating";
+import { useState } from "react";
+import Link from "next/link";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_MOVIE_BY_ID } from "../queries";
+import _get from "lodash/get";
+import { NotificationManager } from "react-notifications";
+import { GET_MOVIE_BY_ID } from "../../queries";
 import {
 	ADD_TO_WATCHLIST,
 	REMOVE_FROM_WATCHLIST,
 	ADD_TO_FAVORITES,
 	REMOVE_FROM_FAVORITES,
-} from "../mutations";
-import Link from "next/link";
-import { NotificationManager } from "react-notifications";
+} from "../../mutations";
+import Layout from "../../client/components/Layout";
+import LoadingModule from "../../client/components/LoadingModule";
+import MovieRating from "../../client/components/MovieRating";
 
-const MoviePage = (props) => {
-	const { session, pageProps, refetch } = props;
+const MovieDetails = (props) => {
+	const { session, refetch, movieId } = props;
 	const user = session.getCurrentUser;
-	const movieId = parseInt(pageProps.movie.id);
+	// Local State
 	const [isWatchlisted, setIsWatchListed] = useState(
 		session.getCurrentUser.watchlist.includes(movieId)
 	);
 	const [isFavorited, setIsFavorited] = useState(
 		session.getCurrentUser.favorites.includes(movieId)
 	);
+	// Query
 	const { data, loading, error } = useQuery(GET_MOVIE_BY_ID, {
 		variables: { id: movieId },
 	});
-	const [addToWatchlist, {}] = useMutation(ADD_TO_WATCHLIST, {
-		variables: { email: user.email, movieId: details.id },
+	const details = _get(data, "getMovieById", null);
+	const dateFormatted = new Date(details?.releaseDate).toLocaleDateString(
+		"en-US"
+	);
+	// Mutations
+	const [addToWatchlist] = useMutation(ADD_TO_WATCHLIST, {
+		variables: { email: user.email, movieId },
 	});
-	const [removeFromWatchlist, {}] = useMutation(REMOVE_FROM_WATCHLIST, {
-		variables: { email: user.email, movieId: details.id },
+	const [removeFromWatchlist] = useMutation(REMOVE_FROM_WATCHLIST, {
+		variables: { email: user.email, movieId },
 	});
-	const [addToFavorites, {}] = useMutation(ADD_TO_FAVORITES, {
-		variables: { email: user.email, movieId: details.id },
+	const [addToFavorites] = useMutation(ADD_TO_FAVORITES, {
+		variables: { email: user.email, movieId },
 	});
-	const [removeFromFavorites, {}] = useMutation(REMOVE_FROM_FAVORITES, {
-		variables: { email: user.email, movieId: details.id },
+	const [removeFromFavorites] = useMutation(REMOVE_FROM_FAVORITES, {
+		variables: { email: user.email, movieId },
 	});
 
 	const toggleWatchlist = (callback, didAdd) =>
@@ -82,9 +89,9 @@ const MoviePage = (props) => {
 			<hr />
 
 			{loading && <LoadingModule />}
-			{error && <div className="errMsg">Error getting movies</div>}
+			{error && <div className="errMsg">Error getting the movie details.</div>}
 
-			{data && (
+			{details && (
 				<div className="row">
 					<div className="col-xs-12 col-md-6">
 						<img
@@ -190,10 +197,12 @@ const MoviePage = (props) => {
 	);
 };
 
-export const getInitialProps = async ({ query }) => {
+export const getServerSideProps = async ({ query }) => {
 	return {
-		movie: query,
+		props: {
+			movieId: parseInt(query.id, 10),
+		},
 	};
 };
 
-export default MoviePage;
+export default MovieDetails;
