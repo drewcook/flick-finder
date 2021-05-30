@@ -20,24 +20,8 @@ const Profile = (props) => {
 	} = useQuery(GET_FAVORITES, {
 		variables: { email: user.email },
 	});
-	const [removeFromWatchlist, {}] = useMutation(REMOVE_FROM_WATCHLIST, {
-		variables: { email: user.email, movieId: movie.id },
-		refetchQueries: [
-			{
-				query: GET_WATCHLIST,
-				variables: { email: user.email },
-			},
-		],
-	});
-	const [removeFromFavorites, {}] = useMutation(REMOVE_FROM_FAVORITES, {
-		variables: { email: user.email, movieId: movie.id },
-		refetchQueries: [
-			{
-				query: GET_FAVORITES,
-				variables: { email: user.email },
-			},
-		],
-	});
+	const [removeFromWatchlist] = useMutation(REMOVE_FROM_WATCHLIST);
+	const [removeFromFavorites] = useMutation(REMOVE_FROM_FAVORITES);
 
 	const formatDate = (date) => {
 		const newDate = new Date(date).toLocaleDateString("en-US");
@@ -45,8 +29,16 @@ const Profile = (props) => {
 		return `${newDate} at ${newTime}`;
 	};
 
-	const removeWatchlist = (callback) =>
-		callback()
+	const handleRemoveWatchlist = (movie) =>
+		removeFromWatchlist({
+			variables: { email: user.email, movieId: movie.id },
+			refetchQueries: [
+				{
+					query: GET_WATCHLIST,
+					variables: { email: user.email },
+				},
+			],
+		})
 			.then(() =>
 				NotificationManager.success(
 					"You've removed an item from your watchlist.",
@@ -57,8 +49,16 @@ const Profile = (props) => {
 				NotificationManager.error("Something went wrong.", "Uh oh!")
 			);
 
-	const removeFavorite = (callback) =>
-		callback()
+	const handleRemoveFavorite = (movie) =>
+		removeFromFavorites({
+			variables: { email: user.email, movieId: movie.id },
+			refetchQueries: [
+				{
+					query: GET_FAVORITES,
+					variables: { email: user.email },
+				},
+			],
+		})
 			.then(() =>
 				NotificationManager.success(
 					"You've removed an item from your favorites.",
@@ -141,7 +141,7 @@ const Profile = (props) => {
 											</Link>
 											<button
 												className="btn btn-sm btn-danger"
-												onClick={() => removeWatchlist(removeFromWatchlist)}
+												onClick={() => handleRemoveWatchlist(movie)}
 											>
 												Remove <i className="fas fa-times"></i>
 											</button>
@@ -195,7 +195,7 @@ const Profile = (props) => {
 											</Link>
 											<button
 												className="btn btn-sm btn-danger"
-												onClick={() => removeFavorite(removeFromFavorites)}
+												onClick={() => handleRemoveFavorite(movie)}
 											>
 												Remove <i className="fas fa-times"></i>
 											</button>
