@@ -11,13 +11,15 @@ const createToken = (user, secret, expiresIn) => {
 };
 
 function movieDbPath(endpoint) {
-	return `${MOVIEDB_BASEURL + endpoint}?api_key=${MOVIEDB_APIKEY}`;
+	return `${process.env.MOVIEDB_BASEURL + endpoint}?api_key=${
+		process.env.MOVIEDB_APIKEY
+	}`;
 }
 
 function movieDbSearch(endpoint, queryString) {
-	return `${
-		MOVIEDB_BASEURL + endpoint
-	}?api_key=${MOVIEDB_APIKEY}&${queryString}`;
+	return `${process.env.MOVIEDB_BASEURL + endpoint}?api_key=${
+		process.env.MOVIEDB_APIKEY
+	}&${queryString}`;
 }
 
 module.exports = {
@@ -25,7 +27,7 @@ module.exports = {
 		// Users
 		getCurrentUser: async (root, args, { currentUser, User }) => {
 			if (!currentUser) return null;
-			// find user based on context we've assign at server
+			// find user based on context we've assign at apollo server
 			// redirect to profile page
 			const user = await User.findOne({ email: currentUser.email }).populate({
 				path: "profile",
@@ -45,7 +47,7 @@ module.exports = {
 					overview: movieData.overview,
 					genres: movieData.genres,
 					releaseDate: movieData.release_date,
-					posterPath: MOVIEDB_IMG_BASE + movieData.poster_path,
+					posterPath: process.env.MOVIEDB_IMG_BASE + movieData.poster_path,
 					popularity: movieData.popularity,
 					runtime: movieData.runtime,
 					voteAverage: movieData.vote_average,
@@ -64,7 +66,7 @@ module.exports = {
 					overview: movieData.overview,
 					genres: movieData.genres,
 					releaseDate: movieData.release_date,
-					posterPath: MOVIEDB_IMG_BASE + movieData.poster_path,
+					posterPath: process.env.MOVIEDB_IMG_BASE + movieData.poster_path,
 					popularity: movieData.popularity,
 					runtime: movieData.runtime,
 					voteAverage: movieData.vote_average,
@@ -85,7 +87,7 @@ module.exports = {
 				})),
 				overview: item.overview,
 				popularity: item.popularity,
-				posterPath: MOVIEDB_IMG_BASE + item.poster_path,
+				posterPath: process.env.MOVIEDB_IMG_BASE + item.poster_path,
 				releaseDate: item.release_date,
 				title: item.title,
 			}));
@@ -100,7 +102,7 @@ module.exports = {
 				overview: movieData.overview,
 				genres: movieData.genres,
 				releaseDate: movieData.release_date,
-				posterPath: MOVIEDB_IMG_BASE + movieData.poster_path,
+				posterPath: process.env.MOVIEDB_IMG_BASE + movieData.poster_path,
 				popularity: movieData.popularity,
 				runtime: movieData.runtime,
 				voteAverage: movieData.vote_average,
@@ -118,7 +120,7 @@ module.exports = {
 			const results = resultsData.results.map((movie) => ({
 				id: movie.id,
 				popularity: movie.popularity,
-				posterPath: MOVIEDB_IMG_BASE + movie.poster_path,
+				posterPath: process.env.MOVIEDB_IMG_BASE + movie.poster_path,
 				releaseDate: movie.release_date,
 				title: movie.title,
 			}));
