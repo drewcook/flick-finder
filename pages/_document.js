@@ -1,4 +1,9 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
+import getConfig from "next/config";
+
+const {
+	publicRuntimeConfig: { GA_TAG },
+} = getConfig();
 
 class FlickFinderDocument extends Document {
 	static async getInitialProps(ctx) {
@@ -19,6 +24,25 @@ class FlickFinderDocument extends Document {
 					/>
 					<link rel="stylesheet" href="/css/notifications.min.css" />
 					<link rel="icon" href="/img/favicon.ico" type="image/x-icon" />
+					{process.env.NODE_ENV === "production" && (
+						<>
+							{/* Google Analytics */}
+							<script
+								async
+								src={`https://www.googletagmanager.com/gtag/js?id=${GA_TAG}`}
+							></script>
+							<script
+								dangerouslySetInnerHTML={{
+									__html: `
+										window.dataLayer = window.dataLayer || [];
+										function gtag(){dataLayer.push(arguments);}
+										gtag('js', new Date());
+										gtag('config', '${GA_TAG}');
+									`,
+								}}
+							/>
+						</>
+					)}
 				</Head>
 				<body>
 					<Main />
