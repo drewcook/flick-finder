@@ -38,7 +38,7 @@ app
 		require("./startup/database")();
 
 		// setup auth middleware
-		require("./startup/authMiddleware")(server);
+		// require("./startup/authMiddleware")(server); see comments on this file as to why it is commented out
 
 		// setup routes
 		require("./startup/routes")(server, handler);
