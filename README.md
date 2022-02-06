@@ -15,3 +15,7 @@ The application will spin up on a local port.
 ## Demo
 
 There is a beta production app hosted at https://flickfinder.drewcook.dev/.
+
+<p align="center">
+ <img src="https://visitor-badge.glitch.me/badge?page_id=drewcook.flick-finder" alt="visitor count"/>
+</p>
